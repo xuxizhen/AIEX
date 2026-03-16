@@ -17,6 +17,9 @@ AIEX/
 ├── AIEX_App_Prototype.html             ← 📱 高保真交互原型 (4 Tab + Nova)
 ├── AIEX_App_Prototype_PRD.md           ← 📝 App 原型需求与设计详述
 │
+├── AIEX_Web_Prototype.html             ← 🖥️ Web 版高保真原型 (桌面端)
+├── AIEX_Web_PRD.md                     ← 📝 Web 版需求与设计详述
+│
 ├── wireframes/                         ← 🎨 Wireframe 设计稿
 │   ├── 01-information-architecture.html   信息架构总览
 │   ├── 02-smart-home-wireframe.html       智能首页
