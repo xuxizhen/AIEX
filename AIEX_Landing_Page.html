@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIEX — AI 驱动的智能交易</title>
+<style>
+:root {
+  --purple: #a78bfa;
+  --purple-dark: #7c5cbf;
+  --purple-glow: rgba(167, 139, 250, 0.3);
+  --green: #34d399;
+  --green-dark: #059669;
+  --gold: #f0c040;
+  --bg-primary: #0a0a14;
+  --bg-secondary: #12121f;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-glass: rgba(255,255,255,0.06);
+  --border-glass: rgba(255,255,255,0.08);
+  --text-primary: #f0f0f5;
+  --text-secondary: rgba(240,240,245,0.65);
+  --text-muted: rgba(240,240,245,0.4);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+img { max-width: 100%; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 16px 0;
+  transition: var(--transition);
+}
+.header.scrolled {
+  background: rgba(10,10,20,0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border-glass);
+  padding: 10px 0;
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+.logo {
+  font-size: 26px; font-weight: 800; letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--purple), var(--green));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.logo span { font-weight: 400; opacity: 0.7; }
+.nav { display: flex; gap: 32px; align-items: center; }
+.nav a {
+  font-size: 14px; color: var(--text-secondary);
+  transition: var(--transition); position: relative;
+}
+.nav a:hover { color: var(--text-primary); }
+.nav a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+  background: var(--purple); transition: var(--transition);
+}
+.nav a:hover::after { width: 100%; }
+.btn-download {
+  padding: 10px 24px; border-radius: 50px; font-size: 14px; font-weight: 600;
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  color: #fff; border: none; cursor: pointer;
+  transition: var(--transition); white-space: nowrap;
+}
+.btn-download:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px var(--purple-glow);
+}
+.mobile-toggle { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+.mobile-nav {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,10,20,0.96); z-index: 999;
+  flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+}
+.mobile-nav.active { display: flex; }
+.mobile-nav a { font-size: 20px; color: var(--text-primary); }
+.mobile-nav-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
+
+/* ===== HERO ===== */
+.hero {
+  padding: 160px 0 80px; position: relative; overflow: hidden;
+  min-height: 100vh; display: flex; align-items: center;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(167,139,250,0.12), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(52,211,153,0.08), transparent 50%);
+}
+#particles-canvas {
+  position: absolute; inset: 0; z-index: 0;
+}
+.hero-content {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.hero-text h1 {
+  font-size: clamp(32px, 5vw, 56px); font-weight: 800; line-height: 1.15;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 0%, var(--purple) 50%, var(--green) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-text .subtitle {
+  font-size: clamp(16px, 2vw, 20px); color: var(--text-secondary);
+  margin-bottom: 36px; max-width: 500px;
+}
+.hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 50px; }
+.btn-primary {
+  padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 600;
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  color: #fff; border: none; cursor: pointer; transition: var(--transition);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px var(--purple-glow);
+}
+.btn-outline {
+  padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 600;
+  background: transparent; color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: var(--transition);
+}
+.btn-outline:hover {
+  border-color: var(--purple);
+  background: rgba(167,139,250,0.08);
+}
+.stats-bar {
+  display: flex; gap: 40px; flex-wrap: wrap;
+}
+.stat-item .stat-value {
+  font-size: 28px; font-weight: 800; color: var(--text-primary);
+}
+.stat-item .stat-value .accent-green { color: var(--green); }
+.stat-item .stat-value .accent-purple { color: var(--purple); }
+.stat-item .stat-value .accent-gold { color: var(--gold); }
+.stat-item .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+/* Phone Mockup */
+.phone-mockup {
+  width: 280px; height: 580px;
+  background: #1a1a2e;
+  border-radius: 36px;
+  border: 3px solid rgba(255,255,255,0.1);
+  overflow: hidden; position: relative;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 60px var(--purple-glow);
+  will-change: transform;
+}
+.phone-mockup-float {
+  animation: phoneFloat 6s ease-in-out infinite;
+}
+@keyframes phoneFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(0.5deg); }
+}
+.phone-notch {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 28px; background: #0a0a14;
+  border-radius: 0 0 16px 16px; z-index: 2;
+}
+.phone-screen {
+  width: 100%; height: 100%; padding: 36px 14px 14px;
+  background: linear-gradient(180deg, #0f0f1e, #161628);
+  overflow: hidden; font-size: 11px;
+}
+.phone-status-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 10px; color: var(--text-secondary); margin-bottom: 12px; padding: 0 4px;
+}
+
+/* Hero Phone - Smart Homepage */
+.hero-phone .phone-greeting { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+.hero-phone .phone-sub { font-size: 10px; color: var(--text-muted); margin-bottom: 12px; }
+.hero-phone .nova-banner {
+  background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(52,211,153,0.15));
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: 12px; padding: 10px; margin-bottom: 12px;
+}
+.hero-phone .nova-banner-title { font-size: 11px; font-weight: 600; color: var(--purple); margin-bottom: 3px; }
+.hero-phone .nova-banner-text { font-size: 9px; color: var(--text-secondary); line-height: 1.4; }
+.hero-phone .portfolio-card {
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 10px; margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.hero-phone .portfolio-label { font-size: 9px; color: var(--text-muted); }
+.hero-phone .portfolio-value { font-size: 22px; font-weight: 800; color: #fff; }
+.hero-phone .portfolio-change { font-size: 10px; color: var(--green); margin-top: 2px; }
+.hero-phone .portfolio-chart {
+  height: 40px; margin-top: 6px;
+  background: linear-gradient(180deg, rgba(52,211,153,0.15), transparent);
+  border-radius: 6px; position: relative; overflow: hidden;
+}
+.hero-phone .portfolio-chart-line {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40'%3E%3Cpath d='M0,35 Q20,30 40,28 T80,20 T120,15 T160,8 T200,5' fill='none' stroke='%2334d399' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 100% 100%;
+}
+.hero-phone .quick-actions { display: flex; gap: 8px; margin-bottom: 10px; }
+.hero-phone .quick-action {
+  flex: 1; background: rgba(255,255,255,0.04); border-radius: 10px;
+  padding: 8px 4px; text-align: center; border: 1px solid rgba(255,255,255,0.06);
+}
+.hero-phone .quick-action-icon { font-size: 16px; margin-bottom: 2px; }
+.hero-phone .quick-action-label { font-size: 8px; color: var(--text-secondary); }
+.hero-phone .market-list-title { font-size: 10px; font-weight: 600; margin-bottom: 6px; color: var(--text-secondary); }
+.hero-phone .market-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.hero-phone .market-item-left { display: flex; align-items: center; gap: 6px; }
+.hero-phone .market-coin-icon {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 700;
+}
+.hero-phone .market-name { font-size: 10px; font-weight: 600; }
+.hero-phone .market-pair { font-size: 8px; color: var(--text-muted); }
+.hero-phone .market-price { font-size: 10px; font-weight: 600; text-align: right; }
+.hero-phone .market-change {
+  font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 600;
+}
+.hero-phone .market-change.up { background: rgba(52,211,153,0.15); color: var(--green); }
+.hero-phone .market-change.down { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+/* ===== SECTIONS COMMON ===== */
+.section { padding: 100px 0; position: relative; }
+.section-badge {
+  display: inline-block; padding: 6px 16px; border-radius: 50px;
+  background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2);
+  font-size: 13px; color: var(--purple); margin-bottom: 16px; font-weight: 500;
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin-bottom: 12px;
+  line-height: 1.2;
+}
+.section-subtitle {
+  font-size: clamp(15px, 1.5vw, 18px); color: var(--text-secondary);
+  margin-bottom: 48px; max-width: 600px;
+}
+.text-gradient {
+  background: linear-gradient(135deg, #fff, var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ===== VALUE PROPS ===== */
+.value-props { background: var(--bg-secondary); }
+.cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.value-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg); padding: 36px 28px;
+  transition: var(--transition); position: relative; overflow: hidden;
+}
+.value-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 0%, rgba(167,139,250,0.08), transparent 60%);
+  opacity: 0; transition: var(--transition);
+}
+.value-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(167,139,250,0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.value-card:hover::before { opacity: 1; }
+.value-card-icon { font-size: 40px; margin-bottom: 20px; display: block; }
+.value-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.value-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ===== FEATURE SHOWCASE (split layout) ===== */
+.feature-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.feature-split.reverse { direction: rtl; }
+.feature-split.reverse > * { direction: ltr; }
+.feature-text h2 {
+  font-size: clamp(26px, 3.5vw, 40px); font-weight: 800; margin-bottom: 24px;
+  line-height: 1.2;
+}
+.feature-list { display: flex; flex-direction: column; gap: 20px; }
+.feature-item {
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.feature-item-icon {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(167,139,250,0.12); display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.feature-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.feature-item p { font-size: 13px; color: var(--text-secondary); }
+.phone-wrapper {
+  display: flex; justify-content: center;
+}
+
+/* Nova phone mockup */
+.nova-phone .nova-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.nova-phone .nova-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--green));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+.nova-phone .nova-name { font-size: 13px; font-weight: 600; }
+.nova-phone .nova-status { font-size: 9px; color: var(--green); }
+.nova-phone .chat-bubble {
+  padding: 10px 12px; border-radius: 14px; margin-bottom: 8px;
+  font-size: 10px; line-height: 1.5;
+}
+.nova-phone .chat-user {
+  background: rgba(167,139,250,0.15); margin-left: 40px;
+  border-bottom-right-radius: 4px;
+}
+.nova-phone .chat-nova {
+  background: rgba(255,255,255,0.06); margin-right: 20px;
+  border-bottom-left-radius: 4px;
+}
+.nova-phone .action-card {
+  background: linear-gradient(135deg, rgba(52,211,153,0.12), rgba(167,139,250,0.08));
+  border: 1px solid rgba(52,211,153,0.2);
+  border-radius: 12px; padding: 10px; margin: 8px 0; margin-right: 20px;
+}
+.nova-phone .action-card-title {
+  font-size: 10px; font-weight: 700; color: var(--green); margin-bottom: 4px;
+}
+.nova-phone .action-card-row {
+  display: flex; justify-content: space-between; font-size: 9px;
+  color: var(--text-secondary); margin-bottom: 2px;
+}
+.nova-phone .action-card-btn {
+  margin-top: 6px; width: 100%; padding: 6px; border-radius: 8px;
+  background: var(--green); color: #0a0a14; font-size: 10px;
+  font-weight: 700; text-align: center; border: none;
+}
+.nova-phone .chat-input {
+  position: absolute; bottom: 14px; left: 14px; right: 14px;
+  background: rgba(255,255,255,0.06); border-radius: 20px;
+  padding: 8px 14px; font-size: 10px; color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+/* Copy Trading Phone */
+.copy-phone .copy-header { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.copy-phone .copy-tabs {
+  display: flex; gap: 0; margin-bottom: 12px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden;
+}
+.copy-phone .copy-tab {
+  flex: 1; padding: 6px; text-align: center; font-size: 10px; font-weight: 500;
+  color: var(--text-muted);
+}
+.copy-phone .copy-tab.active {
+  background: rgba(167,139,250,0.15); color: var(--purple); font-weight: 700;
+}
+.copy-phone .trader-card {
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 10px;
+  margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.06);
+}
+.copy-phone .trader-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.copy-phone .trader-avatar {
+  width: 28px; height: 28px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 10px; font-weight: 700;
+}
+.copy-phone .trader-info { flex: 1; }
+.copy-phone .trader-name { font-size: 11px; font-weight: 600; }
+.copy-phone .trader-tag {
+  font-size: 8px; padding: 1px 5px; border-radius: 4px; display: inline-block; margin-top: 1px;
+}
+.copy-phone .trader-stats { display: flex; gap: 12px; }
+.copy-phone .trader-stat { text-align: center; }
+.copy-phone .trader-stat-value { font-size: 12px; font-weight: 700; }
+.copy-phone .trader-stat-label { font-size: 8px; color: var(--text-muted); }
+.copy-phone .copy-btn {
+  padding: 4px 12px; border-radius: 6px; font-size: 9px; font-weight: 700;
+  border: none; cursor: pointer;
+}
+
+/* Trading Phone */
+.trading-phone .trade-pair {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+}
+.trading-phone .trade-pair-name { font-size: 16px; font-weight: 800; }
+.trading-phone .trade-pair-price { font-size: 20px; font-weight: 800; color: var(--green); }
+.trading-phone .trade-pair-change { font-size: 11px; color: var(--green); }
+.trading-phone .chart-area {
+  height: 120px; margin: 8px 0; position: relative;
+  background: linear-gradient(180deg, rgba(52,211,153,0.08), transparent);
+  border-radius: 8px; overflow: hidden;
+}
+.trading-phone .chart-candles {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 100%;
+  display: flex; align-items: flex-end; gap: 3px; padding: 4px;
+}
+.trading-phone .candle {
+  flex: 1; border-radius: 1px; min-width: 3px;
+}
+.trading-phone .candle.green { background: var(--green); }
+.trading-phone .candle.red { background: #ef4444; }
+.trading-phone .ai-bar {
+  background: linear-gradient(90deg, rgba(167,139,250,0.15), rgba(52,211,153,0.1));
+  border: 1px solid rgba(167,139,250,0.2); border-radius: 8px;
+  padding: 6px 8px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.trading-phone .ai-bar-icon {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--green));
+  display: flex; align-items: center; justify-content: center; font-size: 8px; flex-shrink: 0;
+}
+.trading-phone .ai-bar-text { font-size: 9px; color: var(--text-secondary); }
+.trading-phone .order-tabs {
+  display: flex; gap: 0; margin-bottom: 8px;
+}
+.trading-phone .order-tab {
+  flex: 1; padding: 5px; text-align: center; font-size: 10px;
+  border-bottom: 2px solid transparent; color: var(--text-muted);
+}
+.trading-phone .order-tab.active { border-bottom-color: var(--green); color: var(--green); font-weight: 600; }
+.trading-phone .order-buttons { display: flex; gap: 6px; }
+.trading-phone .order-btn {
+  flex: 1; padding: 8px; border-radius: 8px; text-align: center;
+  font-size: 11px; font-weight: 700; border: none;
+}
+.trading-phone .order-btn.buy { background: var(--green); color: #0a0a14; }
+.trading-phone .order-btn.sell { background: #ef4444; color: #fff; }
+
+/* ===== TRADING SHOWCASE (full width) ===== */
+.trading-showcase { background: var(--bg-secondary); text-align: center; }
+.trading-showcase .section-subtitle { margin-left: auto; margin-right: auto; }
+.trading-features {
+  display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-top: 40px;
+}
+.trading-feature-tag {
+  padding: 8px 20px; border-radius: 50px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass);
+  font-size: 14px; color: var(--text-secondary); font-weight: 500;
+}
+
+/* ===== PRICING ===== */
+.pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.pricing-card {
+  background: var(--bg-glass); backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass); border-radius: var(--radius-lg);
+  padding: 32px 24px; position: relative; transition: var(--transition);
+}
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.pricing-card.popular {
+  border-color: var(--purple);
+  background: linear-gradient(180deg, rgba(167,139,250,0.08), var(--bg-glass));
+  box-shadow: 0 0 40px rgba(167,139,250,0.1);
+}
+.pricing-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  padding: 4px 16px; border-radius: 50px;
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.pricing-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.pricing-price {
+  font-size: 36px; font-weight: 800; margin-bottom: 4px;
+}
+.pricing-price .currency { font-size: 18px; font-weight: 500; }
+.pricing-price .period { font-size: 14px; font-weight: 400; color: var(--text-muted); }
+.pricing-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+.pricing-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.pricing-feature {
+  font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;
+}
+.pricing-feature .check { color: var(--green); font-weight: 700; }
+.pricing-btn {
+  width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.15); background: transparent;
+  color: var(--text-primary); cursor: pointer; transition: var(--transition);
+}
+.pricing-btn:hover {
+  background: rgba(167,139,250,0.1); border-color: var(--purple);
+}
+.pricing-card.popular .pricing-btn {
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  border: none;
+}
+.pricing-comparison {
+  margin-top: 40px; padding: 20px 28px; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(240,192,64,0.06), rgba(167,139,250,0.06));
+  border: 1px solid rgba(240,192,64,0.15);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.pricing-comparison p { font-size: 15px; color: var(--text-secondary); }
+.pricing-comparison strong { color: var(--gold); }
+.pricing-promo-btn {
+  padding: 12px 28px; border-radius: 50px; font-size: 14px; font-weight: 600;
+  background: linear-gradient(135deg, var(--gold), #e6a800);
+  color: #0a0a14; border: none; cursor: pointer; transition: var(--transition);
+}
+.pricing-promo-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(240,192,64,0.3); }
+
+/* ===== SECURITY ===== */
+.security { background: var(--bg-secondary); }
+.security-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.security-card {
+  background: var(--bg-glass); border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg); padding: 32px 24px;
+  text-align: center; transition: var(--transition);
+}
+.security-card:hover {
+  transform: translateY(-4px); border-color: rgba(167,139,250,0.2);
+  box-shadow: 0 16px 50px rgba(0,0,0,0.3);
+}
+.security-card-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+.security-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.security-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ===== HOW IT WORKS ===== */
+.steps-container {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  position: relative; padding: 40px 0;
+}
+.steps-container::before {
+  content: ''; position: absolute; top: 60px; left: 10%; right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--green));
+  opacity: 0.3;
+}
+.step {
+  flex: 1; text-align: center; position: relative; z-index: 1; padding: 0 10px;
+}
+.step-circle {
+  width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 16px;
+  background: linear-gradient(135deg, var(--purple), var(--green));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 800;
+  box-shadow: 0 0 30px var(--purple-glow);
+}
+.step-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.step-desc { font-size: 13px; color: var(--text-secondary); }
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  padding: 100px 0; text-align: center; position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(167,139,250,0.15), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 30% 70%, rgba(52,211,153,0.1), transparent 50%);
+}
+.cta-content { position: relative; z-index: 1; }
+.cta-title {
+  font-size: clamp(30px, 4vw, 48px); font-weight: 800; margin-bottom: 20px;
+}
+.cta-subtitle { font-size: 18px; color: var(--text-secondary); margin-bottom: 40px; }
+.cta-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+.store-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 28px; border-radius: 12px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer; transition: var(--transition);
+}
+.store-btn:hover {
+  background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
+.store-btn-icon { font-size: 28px; }
+.store-btn-text { text-align: left; }
+.store-btn-label { font-size: 10px; color: var(--text-muted); }
+.store-btn-name { font-size: 16px; font-weight: 700; }
+.qr-placeholder {
+  width: 140px; height: 140px; margin: 0 auto;
+  background: rgba(255,255,255,0.06); border-radius: 16px;
+  border: 1px solid var(--border-glass);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px;
+}
+.qr-placeholder .qr-grid {
+  width: 80px; height: 80px;
+  display: grid; grid-template-columns: repeat(8,1fr); grid-template-rows: repeat(8,1fr); gap: 2px;
+}
+.qr-placeholder .qr-cell {
+  border-radius: 1px;
+}
+.qr-placeholder .qr-label { font-size: 10px; color: var(--text-muted); }
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 50px 0 30px;
+  border-top: 1px solid var(--border-glass);
+}
+.footer-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 40px; margin-bottom: 40px;
+}
+.footer-brand .logo { margin-bottom: 10px; display: inline-block; }
+.footer-brand p { font-size: 13px; color: var(--text-muted); max-width: 280px; }
+.footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-links a { font-size: 13px; color: var(--text-secondary); transition: var(--transition); }
+.footer-links a:hover { color: var(--purple); }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border-glass);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: var(--transition);
+}
+.footer-social a:hover {
+  background: rgba(167,139,250,0.15); border-color: var(--purple);
+}
+.footer-bottom {
+  border-top: 1px solid var(--border-glass); padding-top: 20px;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.footer-disclaimer { font-size: 11px; color: var(--text-muted); max-width: 600px; line-height: 1.6; }
+.footer-copyright { font-size: 12px; color: var(--text-muted); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .hero-content { grid-template-columns: 1fr; text-align: center; }
+  .hero-text .subtitle { margin-left: auto; margin-right: auto; }
+  .hero-buttons { justify-content: center; }
+  .stats-bar { justify-content: center; }
+  .hero .phone-wrapper { display: flex; justify-content: center; margin-top: 20px; }
+  .feature-split { grid-template-columns: 1fr; gap: 40px; }
+  .feature-split.reverse { direction: ltr; }
+  .feature-split .phone-wrapper { order: -1; }
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  .security-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav { display: none; }
+  .mobile-toggle { display: block; }
+}
+@media (max-width: 768px) {
+  .section { padding: 70px 0; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .security-grid { grid-template-columns: 1fr 1fr; }
+  .steps-container { flex-direction: column; gap: 30px; align-items: center; }
+  .steps-container::before { display: none; }
+  .phone-mockup { width: 260px; height: 540px; }
+  .footer-top { flex-direction: column; align-items: center; text-align: center; }
+  .footer-brand p { max-width: 100%; }
+  .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
+  .pricing-comparison { flex-direction: column; text-align: center; }
+}
+@media (max-width: 480px) {
+  .hero { padding: 130px 0 60px; }
+  .stats-bar { gap: 20px; }
+  .stat-item .stat-value { font-size: 22px; }
+  .security-grid { grid-template-columns: 1fr; }
+  .phone-mockup { width: 240px; height: 500px; }
+  .pricing-comparison p { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="#" class="logo">AIEX</a>
+    <nav class="nav">
+      <a href="#features">功能特色</a>
+      <a href="#nova">Nova AI</a>
+      <a href="#copy-trading">跟单广场</a>
+      <a href="#pricing">定价</a>
+      <a href="#security">安全</a>
+    </nav>
+    <button class="btn-download" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">立即下载</button>
+    <button class="mobile-toggle" onclick="document.querySelector('.mobile-nav').classList.add('active')" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="this.parentElement.classList.remove('active')">&times;</button>
+  <a href="#features" onclick="this.parentElement.classList.remove('active')">功能特色</a>
+  <a href="#nova" onclick="this.parentElement.classList.remove('active')">Nova AI</a>
+  <a href="#copy-trading" onclick="this.parentElement.classList.remove('active')">跟单广场</a>
+  <a href="#pricing" onclick="this.parentElement.classList.remove('active')">定价</a>
+  <a href="#security" onclick="this.parentElement.classList.remove('active')">安全</a>
+  <button class="btn-download" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'}); this.parentElement.classList.remove('active')">立即下载</button>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="reveal">AI 驱动的下一代<br>加密交易</h1>
+        <p class="subtitle reveal">Nova AI 助手全程陪伴，从新手到专家只需一个 App<br><span style="color:var(--text-muted);font-size:14px;">Your AI-Powered Crypto Trading Companion</span></p>
+        <div class="hero-buttons reveal">
+          <button class="btn-primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">免费下载</button>
+          <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">了解更多</button>
+        </div>
+        <div class="stats-bar reveal">
+          <div class="stat-item">
+            <div class="stat-value"><span class="accent-purple">50,000+</span></div>
+            <div class="stat-label">活跃用户 Active Users</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value"><span class="accent-green">127%</span></div>
+            <div class="stat-label">平均策略收益 Avg. Strategy Return</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value"><span class="accent-gold">$9.9</span>/月起</div>
+            <div class="stat-label">专业版起步价 Starting Price</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-wrapper reveal">
+        <div class="phone-mockup phone-mockup-float hero-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status-bar">
+              <span>9:41</span>
+              <span>●●●● 5G ▐▐▐▐</span>
+            </div>
+            <div class="phone-greeting">早安，Alex 👋</div>
+            <div class="phone-sub">市场概览 · 今日策略已更新</div>
+            <div class="nova-banner">
+              <div class="nova-banner-title">🤖 Nova 晨报</div>
+              <div class="nova-banner-text">BTC 突破 68k 关键阻力位，建议关注 ETH 联动行情。您的 2 个跟单策略运行正常，总收益 +12.8%。</div>
+            </div>
+            <div class="portfolio-card">
+              <div class="portfolio-label">总资产 Total Portfolio</div>
+              <div class="portfolio-value">$24,561<span style="font-size:13px;color:var(--text-muted)">.38</span></div>
+              <div class="portfolio-change">+$2,847.52 (+13.1%) 📈 30D</div>
+              <div class="portfolio-chart"><div class="portfolio-chart-line"></div></div>
+            </div>
+            <div class="quick-actions">
+              <div class="quick-action">
+                <div class="quick-action-icon">💬</div>
+                <div class="quick-action-label">问 Nova</div>
+              </div>
+              <div class="quick-action">
+                <div class="quick-action-icon">📊</div>
+                <div class="quick-action-label">交易</div>
+              </div>
+              <div class="quick-action">
+                <div class="quick-action-icon">👥</div>
+                <div class="quick-action-label">跟单</div>
+              </div>
+              <div class="quick-action">
+                <div class="quick-action-icon">⚙️</div>
+                <div class="quick-action-label">策略</div>
+              </div>
+            </div>
+            <div class="market-list-title">热门行情 Trending</div>
+            <div class="market-item">
+              <div class="market-item-left">
+                <div class="market-coin-icon" style="background:#f7931a;">B</div>
+                <div>
+                  <div class="market-name">BTC</div>
+                  <div class="market-pair">USDT</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div class="market-price">68,432.50</div>
+                <div class="market-change up">+3.24%</div>
+              </div>
+            </div>
+            <div class="market-item">
+              <div class="market-item-left">
+                <div class="market-coin-icon" style="background:#627eea;">E</div>
+                <div>
+                  <div class="market-name">ETH</div>
+                  <div class="market-pair">USDT</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div class="market-price">3,847.20</div>
+                <div class="market-change up">+5.17%</div>
+              </div>
+            </div>
+            <div class="market-item">
+              <div class="market-item-left">
+                <div class="market-coin-icon" style="background:#26a17b;">S</div>
+                <div>
+                  <div class="market-name">SOL</div>
+                  <div class="market-pair">USDT</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div class="market-price">178.65</div>
+                <div class="market-change down">-1.82%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VALUE PROPS ===== -->
+<section class="section value-props" id="features">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-badge reveal">Core Features</div>
+      <h2 class="section-title reveal"><span class="text-gradient">为什么选择 AIEX</span></h2>
+      <p class="section-subtitle reveal" style="margin-left:auto;margin-right:auto;">三大核心能力，重新定义加密交易体验<br><span style="color:var(--text-muted);font-size:13px;">Three pillars that redefine crypto trading</span></p>
+    </div>
+    <div class="cards-grid">
+      <div class="value-card reveal">
+        <span class="value-card-icon">🧠</span>
+        <h3>Nova AI 全程陪伴</h3>
+        <p>从市场分析到下单执行，Nova 理解你的每一个交易意图。自然语言交互，让交易像聊天一样简单。</p>
+        <p style="margin-top:8px;font-size:12px;color:var(--text-muted);">AI companion from analysis to execution</p>
+      </div>
+      <div class="value-card reveal">
+        <span class="value-card-icon">🏆</span>
+        <h3>智能跟单广场</h3>
+        <p>真人实盘 + AI 策略，透明业绩数据，一键跟单。高水位分润机制，让利益与用户完全一致。</p>
+        <p style="margin-top:8px;font-size:12px;color:var(--text-muted);">Copy trading with full transparency</p>
+      </div>
+      <div class="value-card reveal">
+        <span class="value-card-icon">📈</span>
+        <h3>专业交易体验</h3>
+        <p>现货与合约交易，AI 风控评估，自然语言下单。支持 1-125x 杠杆，满足不同风险偏好。</p>
+        <p style="margin-top:8px;font-size:12px;color:var(--text-muted);">Professional trading with AI risk management</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NOVA AI SHOWCASE ===== -->
+<section class="section" id="nova">
+  <div class="container">
+    <div class="feature-split">
+      <div class="feature-text">
+        <div class="section-badge reveal">Nova AI Assistant</div>
+        <h2 class="section-title reveal"><span class="text-gradient">认识 Nova</span><br>你的 AI 交易伙伴</h2>
+        <p class="section-subtitle reveal">Meet Nova — Your AI Trading Partner</p>
+        <div class="feature-list">
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">💬</div>
+            <div>
+              <h4>自然语言下单</h4>
+              <p>"买入 0.1 BTC" 即刻执行，告别复杂表单</p>
+            </div>
+          </div>
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">🎯</div>
+            <div>
+              <h4>上下文感知</h4>
+              <p>自动理解你当前的交易场景，智能推荐操作</p>
+            </div>
+          </div>
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">⚡</div>
+            <div>
+              <h4>行动卡片</h4>
+              <p>分析完直接给出可执行的建议订单，一键确认</p>
+            </div>
+          </div>
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">🔑</div>
+            <div>
+              <h4>渐进授权</h4>
+              <p>从只读建议到全自动交易，你来控制 Nova 的权限</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-wrapper reveal">
+        <div class="phone-mockup phone-mockup-float nova-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status-bar">
+              <span>10:23</span>
+              <span>●●●● 5G ▐▐▐▐</span>
+            </div>
+            <div class="nova-header">
+              <div class="nova-avatar">N</div>
+              <div>
+                <div class="nova-name">Nova AI</div>
+                <div class="nova-status">● 在线</div>
+              </div>
+            </div>
+            <div class="chat-bubble chat-user">帮我分析一下 ETH 现在能不能买入</div>
+            <div class="chat-bubble chat-nova">
+              <div style="font-weight:600;margin-bottom:4px;color:var(--purple);">📊 ETH/USDT 实时分析</div>
+              <div style="margin-bottom:4px;">当前价格: <strong style="color:#fff;">$3,847.20</strong> (+5.17%)</div>
+              <div style="margin-bottom:2px;color:var(--green);">✅ RSI(14): 58.3 — 未超买</div>
+              <div style="margin-bottom:2px;color:var(--green);">✅ MACD: 金叉确认，动能增强</div>
+              <div style="margin-bottom:2px;color:var(--gold);">⚠️ 接近 $3,900 阻力位</div>
+              <div style="margin-top:4px;">建议分批建仓，首次仓位控制在 30% 以内。</div>
+            </div>
+            <div class="action-card">
+              <div class="action-card-title">📋 建议订单 Suggested Order</div>
+              <div class="action-card-row"><span>方向</span><span style="color:var(--green);">买入 / Long</span></div>
+              <div class="action-card-row"><span>交易对</span><span>ETH/USDT</span></div>
+              <div class="action-card-row"><span>数量</span><span>0.5 ETH (~$1,923)</span></div>
+              <div class="action-card-row"><span>止损</span><span style="color:#ef4444;">$3,650 (-5.1%)</span></div>
+              <div class="action-card-row"><span>止盈</span><span style="color:var(--green);">$4,200 (+9.2%)</span></div>
+              <div class="action-card-btn">确认下单 Confirm Order</div>
+            </div>
+            <div class="chat-input">
+              <span>输入消息或交易指令...</span>
+              <span style="color:var(--purple);">↗</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COPY TRADING ===== -->
+<section class="section" id="copy-trading" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="feature-split reverse">
+      <div class="feature-text">
+        <div class="section-badge reveal">Copy Trading Plaza</div>
+        <h2 class="section-title reveal"><span class="text-gradient">跟单广场</span><br>让高手带你飞</h2>
+        <p class="section-subtitle reveal">Follow top traders and AI strategies with full transparency</p>
+        <div class="feature-list">
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">👤</div>
+            <div>
+              <h4>真人实盘分享</h4>
+              <p>完整业绩透明可查，历史交易记录全部公开</p>
+            </div>
+          </div>
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">🤖</div>
+            <div>
+              <h4>AI 策略真仓运行</h4>
+              <p>量化指标全公开，回撤、夏普比率、胜率一目了然</p>
+            </div>
+          </div>
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">💰</div>
+            <div>
+              <h4>高水位分润</h4>
+              <p>只在赚钱时分成，利益完全一致</p>
+            </div>
+          </div>
+          <div class="feature-item reveal">
+            <div class="feature-item-icon">🆓</div>
+            <div>
+              <h4>从免费策略起步</h4>
+              <p>按需升级，零门槛体验跟单交易</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-wrapper reveal">
+        <div class="phone-mockup phone-mockup-float copy-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status-bar">
+              <span>14:08</span>
+              <span>●●●● 5G ▐▐▐▐</span>
+            </div>
+            <div class="copy-header">跟单广场</div>
+            <div class="copy-tabs">
+              <div class="copy-tab active">推荐</div>
+              <div class="copy-tab">真人交易员</div>
+              <div class="copy-tab">AI 策略</div>
+            </div>
+            <!-- Trader Card 1 -->
+            <div class="trader-card">
+              <div class="trader-top">
+                <div class="trader-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">CK</div>
+                <div class="trader-info">
+                  <div class="trader-name">CryptoKing</div>
+                  <div class="trader-tag" style="background:rgba(240,192,64,0.15);color:var(--gold);">🏅 金牌交易员</div>
+                </div>
+                <button class="copy-btn" style="background:var(--green);color:#0a0a14;">跟单</button>
+              </div>
+              <div class="trader-stats">
+                <div class="trader-stat">
+                  <div class="trader-stat-value" style="color:var(--green);">+186.5%</div>
+                  <div class="trader-stat-label">90日收益</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">76.3%</div>
+                  <div class="trader-stat-label">胜率</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">-8.2%</div>
+                  <div class="trader-stat-label">最大回撤</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">1,247</div>
+                  <div class="trader-stat-label">跟随者</div>
+                </div>
+              </div>
+            </div>
+            <!-- AI Strategy Card -->
+            <div class="trader-card" style="border-color:rgba(167,139,250,0.2);">
+              <div class="trader-top">
+                <div class="trader-avatar" style="background:linear-gradient(135deg,var(--purple),var(--green));">AI</div>
+                <div class="trader-info">
+                  <div class="trader-name">Nova 趋势追踪 v3</div>
+                  <div class="trader-tag" style="background:rgba(167,139,250,0.15);color:var(--purple);">🤖 AI 策略</div>
+                </div>
+                <button class="copy-btn" style="background:var(--purple);color:#fff;">跟单</button>
+              </div>
+              <div class="trader-stats">
+                <div class="trader-stat">
+                  <div class="trader-stat-value" style="color:var(--green);">+127.3%</div>
+                  <div class="trader-stat-label">90日收益</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">2.41</div>
+                  <div class="trader-stat-label">夏普比率</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">-5.7%</div>
+                  <div class="trader-stat-label">最大回撤</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">FREE</div>
+                  <div class="trader-stat-label" style="color:var(--green);">免费</div>
+                </div>
+              </div>
+            </div>
+            <!-- Trader Card 2 -->
+            <div class="trader-card">
+              <div class="trader-top">
+                <div class="trader-avatar" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);">WS</div>
+                <div class="trader-info">
+                  <div class="trader-name">WhaleShark</div>
+                  <div class="trader-tag" style="background:rgba(59,130,246,0.15);color:#3b82f6;">🐋 大户</div>
+                </div>
+                <button class="copy-btn" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.15);">详情</button>
+              </div>
+              <div class="trader-stats">
+                <div class="trader-stat">
+                  <div class="trader-stat-value" style="color:var(--green);">+94.8%</div>
+                  <div class="trader-stat-label">90日收益</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">68.9%</div>
+                  <div class="trader-stat-label">胜率</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">-12.1%</div>
+                  <div class="trader-stat-label">最大回撤</div>
+                </div>
+                <div class="trader-stat">
+                  <div class="trader-stat-value">832</div>
+                  <div class="trader-stat-label">跟随者</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRADING INTERFACE ===== -->
+<section class="section trading-showcase" id="trading">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-badge reveal">Trading Interface</div>
+      <h2 class="section-title reveal"><span class="text-gradient">专业级交易，AI 级智能</span></h2>
+      <p class="section-subtitle reveal">Professional-grade trading powered by AI intelligence</p>
+    </div>
+    <div class="phone-wrapper reveal" style="margin-bottom:20px;">
+      <div class="phone-mockup phone-mockup-float trading-phone" style="width:300px;height:600px;">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-status-bar">
+            <span>16:42</span>
+            <span>●●●● 5G ▐▐▐▐</span>
+          </div>
+          <div class="trade-pair">
+            <div class="trade-pair-name">BTC/USDT</div>
+            <span style="font-size:9px;padding:2px 6px;border-radius:4px;background:rgba(52,211,153,0.15);color:var(--green);margin-left:6px;">永续</span>
+          </div>
+          <div class="trade-pair-price">68,432.50</div>
+          <div class="trade-pair-change">+2,148.30 (+3.24%) 24h</div>
+          <div class="chart-area">
+            <div class="chart-candles">
+              <div class="candle green" style="height:45%"></div>
+              <div class="candle red" style="height:30%"></div>
+              <div class="candle green" style="height:55%"></div>
+              <div class="candle green" style="height:40%"></div>
+              <div class="candle red" style="height:25%"></div>
+              <div class="candle green" style="height:60%"></div>
+              <div class="candle red" style="height:35%"></div>
+              <div class="candle green" style="height:50%"></div>
+              <div class="candle green" style="height:65%"></div>
+              <div class="candle red" style="height:28%"></div>
+              <div class="candle green" style="height:70%"></div>
+              <div class="candle green" style="height:55%"></div>
+              <div class="candle red" style="height:32%"></div>
+              <div class="candle green" style="height:75%"></div>
+              <div class="candle red" style="height:40%"></div>
+              <div class="candle green" style="height:68%"></div>
+              <div class="candle green" style="height:80%"></div>
+              <div class="candle red" style="height:45%"></div>
+              <div class="candle green" style="height:72%"></div>
+              <div class="candle green" style="height:85%"></div>
+              <div class="candle red" style="height:38%"></div>
+              <div class="candle green" style="height:78%"></div>
+              <div class="candle green" style="height:90%"></div>
+              <div class="candle green" style="height:88%"></div>
+            </div>
+          </div>
+          <div class="ai-bar">
+            <div class="ai-bar-icon">N</div>
+            <div class="ai-bar-text"><strong style="color:var(--green);">看涨</strong> · RSI 58 · MACD 金叉 · 建议多单入场 68,200 · 目标 72,000</div>
+          </div>
+          <div class="order-tabs">
+            <div class="order-tab active">限价单</div>
+            <div class="order-tab">市价单</div>
+            <div class="order-tab">条件单</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-muted);margin-bottom:4px;">
+            <span>杠杆 Leverage</span>
+            <span style="color:var(--gold);font-weight:700;">20x</span>
+          </div>
+          <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;margin-bottom:8px;position:relative;">
+            <div style="width:16%;height:100%;background:var(--gold);border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:6px;">
+            <div style="flex:1">
+              <div style="font-size:8px;color:var(--text-muted);margin-bottom:2px;">价格 Price</div>
+              <div style="background:rgba(255,255,255,0.04);padding:5px 8px;border-radius:6px;font-size:11px;border:1px solid rgba(255,255,255,0.06);">68,200.00</div>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:8px;color:var(--text-muted);margin-bottom:2px;">数量 Amount</div>
+              <div style="background:rgba(255,255,255,0.04);padding:5px 8px;border-radius:6px;font-size:11px;border:1px solid rgba(255,255,255,0.06);">0.15 BTC</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <div style="flex:1">
+              <div style="font-size:8px;color:var(--text-muted);margin-bottom:2px;">止盈 TP</div>
+              <div style="background:rgba(52,211,153,0.06);padding:5px 8px;border-radius:6px;font-size:10px;border:1px solid rgba(52,211,153,0.1);color:var(--green);">72,000</div>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:8px;color:var(--text-muted);margin-bottom:2px;">止损 SL</div>
+              <div style="background:rgba(239,68,68,0.06);padding:5px 8px;border-radius:6px;font-size:10px;border:1px solid rgba(239,68,68,0.1);color:#ef4444;">66,500</div>
+            </div>
+          </div>
+          <div class="order-buttons">
+            <button class="order-btn buy">买入/做多 Long</button>
+            <button class="order-btn sell">卖出/做空 Short</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="trading-features reveal">
+      <div class="trading-feature-tag">📊 现货交易 Spot</div>
+      <div class="trading-feature-tag">📈 合约交易 Futures</div>
+      <div class="trading-feature-tag">⚡ 1-125x 杠杆</div>
+      <div class="trading-feature-tag">🛡️ AI 风控 Risk Control</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-badge reveal">Pricing Plans</div>
+      <h2 class="section-title reveal"><span class="text-gradient">选择适合你的方案</span></h2>
+      <p class="section-subtitle reveal" style="margin-left:auto;margin-right:auto;">Choose the plan that fits your trading style</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="pricing-card reveal">
+        <div class="pricing-name">FREE</div>
+        <div class="pricing-price">免费</div>
+        <div class="pricing-desc">零成本开始 AI 交易</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="check">&#10003;</span> 2 个免费跟单策略</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 1 个跟单交易员</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 10 次/天 Nova 对话</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 基础市场分析</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 现货交易</div>
+        </div>
+        <button class="pricing-btn">免费开始</button>
+      </div>
+      <!-- PRO -->
+      <div class="pricing-card reveal">
+        <div class="pricing-name" style="color:var(--purple);">PRO</div>
+        <div class="pricing-price"><span class="currency">$</span>9.9<span class="period">/月</span></div>
+        <div class="pricing-desc">进阶交易者的最佳选择</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="check">&#10003;</span> 全部免费策略 + 3 个高级策略</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 5 个跟单交易员</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 100 次/天 Nova 对话</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 高级技术分析</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 合约交易 (25x)</div>
+        </div>
+        <button class="pricing-btn">选择 PRO</button>
+      </div>
+      <!-- ELITE -->
+      <div class="pricing-card popular reveal">
+        <div class="pricing-badge">🔥 最受欢迎 Most Popular</div>
+        <div class="pricing-name" style="color:var(--purple);">ELITE</div>
+        <div class="pricing-price"><span class="currency">$</span>29.9<span class="period">/月</span></div>
+        <div class="pricing-desc">全功能解锁，AI 全自动</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="check">&#10003;</span> 全部策略无限使用</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 15 个跟单交易员</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> Nova 无限对话</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 自动交易 (L3 授权)</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 合约交易 (125x)</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> AI 风控断路器</div>
+        </div>
+        <button class="pricing-btn">选择 ELITE</button>
+      </div>
+      <!-- MAX -->
+      <div class="pricing-card reveal">
+        <div class="pricing-name" style="color:var(--gold);">MAX</div>
+        <div class="pricing-price"><span class="currency">$</span>99.9<span class="period">/月</span></div>
+        <div class="pricing-desc">机构级别的全能方案</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="check">&#10003;</span> 一切无限制</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 无限跟单交易员</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 自定义 AI 策略</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 专属客户经理</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> API 优先访问</div>
+          <div class="pricing-feature"><span class="check">&#10003;</span> 白手套接入服务</div>
+        </div>
+        <button class="pricing-btn">联系我们</button>
+      </div>
+    </div>
+    <div class="pricing-comparison reveal">
+      <p>💡 对比 Cryptohopper <strong>$24-107/月</strong>，AIEX 功能更强价格更低，而且内置 AI 助手</p>
+      <button class="pricing-promo-btn">首月仅 $1 体验 PRO</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECURITY ===== -->
+<section class="section security" id="security">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-badge reveal">Security & Trust</div>
+      <h2 class="section-title reveal"><span class="text-gradient">你的资产安全是第一优先级</span></h2>
+      <p class="section-subtitle reveal" style="margin-left:auto;margin-right:auto;">Your asset security is our top priority</p>
+    </div>
+    <div class="security-grid">
+      <div class="security-card reveal">
+        <span class="security-card-icon">🔒</span>
+        <h3>资金安全</h3>
+        <p>资金始终在 Toobit 账户，AIEX 不托管任何用户资产。OAuth 授权，权限最小化。</p>
+      </div>
+      <div class="security-card reveal">
+        <span class="security-card-icon">🛡️</span>
+        <h3>AI 断路器</h3>
+        <p>极端行情自动暂停交易，保护你的仓位。智能风控 7×24 小时运行。</p>
+      </div>
+      <div class="security-card reveal">
+        <span class="security-card-icon">🔐</span>
+        <h3>数据隔离</h3>
+        <p>用户数据严格隔离，AI 不跨用户学习。你的交易策略只属于你。</p>
+      </div>
+      <div class="security-card reveal">
+        <span class="security-card-icon">&#9989;</span>
+        <h3>合规运营</h3>
+        <p>风险提示透明，不承诺任何收益。严格遵守相关法规要求。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-badge reveal">Get Started</div>
+      <h2 class="section-title reveal"><span class="text-gradient">四步开启智能交易</span></h2>
+      <p class="section-subtitle reveal" style="margin-left:auto;margin-right:auto;">Get started in four simple steps</p>
+    </div>
+    <div class="steps-container reveal">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <div class="step-title">下载 AIEX</div>
+        <div class="step-desc">iOS / Android 双平台支持</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-title">Toobit 一键登录</div>
+        <div class="step-desc">OAuth 安全授权，无需新注册</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-title">选择风险偏好</div>
+        <div class="step-desc">Nova 根据偏好定制策略</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-title">Nova 开始服务</div>
+        <div class="step-desc">AI 全程陪伴你的交易旅程</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="section cta-section" id="cta">
+  <div class="container">
+    <div class="cta-content">
+      <h2 class="cta-title reveal"><span class="text-gradient">开启 AI 智能交易之旅</span></h2>
+      <p class="cta-subtitle reveal">Start Your AI-Powered Trading Journey Today</p>
+      <div class="cta-buttons reveal">
+        <div class="store-btn">
+          <div class="store-btn-icon">&#63743;</div>
+          <div class="store-btn-text">
+            <div class="store-btn-label">Download on the</div>
+            <div class="store-btn-name">App Store</div>
+          </div>
+        </div>
+        <div class="store-btn">
+          <div class="store-btn-icon">&#9654;</div>
+          <div class="store-btn-text">
+            <div class="store-btn-label">GET IT ON</div>
+            <div class="store-btn-name">Google Play</div>
+          </div>
+        </div>
+      </div>
+      <div class="qr-placeholder reveal">
+        <div class="qr-grid" id="qrGrid"></div>
+        <div class="qr-label">扫码下载 Scan to Download</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo">AIEX</a>
+        <p style="margin-top:10px;">AI 驱动的智能加密交易平台<br>AI-Powered Smart Crypto Trading</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">关于我们</a>
+        <a href="#">帮助中心</a>
+        <a href="#">API 文档</a>
+        <a href="#">用户协议</a>
+        <a href="#">隐私政策</a>
+      </div>
+      <div class="footer-social">
+        <a href="#" title="Twitter">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" title="Telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+        <a href="#" title="Discord">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-disclaimer">
+        ⚠️ 风险提示：加密货币交易存在风险，AI 建议不构成投资建议。过往业绩不代表未来表现。请根据自身风险承受能力谨慎投资。<br>
+        Risk Warning: Crypto trading involves risk. AI suggestions do not constitute investment advice. Past performance does not guarantee future results.
+      </div>
+      <div class="footer-copyright">&copy; 2026 AIEX. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== HEADER SCROLL =====
+(function(){
+  const header = document.getElementById('header');
+  let ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      requestAnimationFrame(function(){
+        header.classList.toggle('scrolled', window.scrollY > 40);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+
+// ===== PARTICLES =====
+(function(){
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  function resize(){
+    w = canvas.width = canvas.parentElement.offsetWidth;
+    h = canvas.height = canvas.parentElement.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function Particle(){
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    this.r = Math.random() * 2 + 0.5;
+    this.dx = (Math.random() - 0.5) * 0.4;
+    this.dy = (Math.random() - 0.5) * 0.4;
+    this.alpha = Math.random() * 0.4 + 0.1;
+  }
+
+  for(let i = 0; i < 60; i++) particles.push(new Particle());
+
+  function animate(){
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(function(p){
+      p.x += p.dx;
+      p.y += p.dy;
+      if(p.x < 0 || p.x > w) p.dx *= -1;
+      if(p.y < 0 || p.y > h) p.dy *= -1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(167,139,250,' + p.alpha + ')';
+      ctx.fill();
+    });
+    // Draw connections
+    for(let i = 0; i < particles.length; i++){
+      for(let j = i + 1; j < particles.length; j++){
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if(dist < 150){
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(167,139,250,' + (0.06 * (1 - dist / 150)) + ')';
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== SCROLL REVEAL =====
+(function(){
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        // Stagger children if inside a grid
+        const parent = entry.target.parentElement;
+        if(parent){
+          const siblings = parent.querySelectorAll('.reveal');
+          let delay = 0;
+          siblings.forEach(function(sib){
+            if(sib.classList.contains('visible')){
+              return;
+            }
+          });
+        }
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(function(el, i){
+    el.style.transitionDelay = (i % 4) * 0.08 + 's';
+    observer.observe(el);
+  });
+})();
+
+// ===== QR CODE PLACEHOLDER =====
+(function(){
+  const grid = document.getElementById('qrGrid');
+  if(!grid) return;
+  // Deterministic pseudo-QR pattern
+  const pattern = [
+    1,1,1,1,1,1,0,1,
+    1,0,0,0,0,1,0,0,
+    1,0,1,1,0,1,0,1,
+    1,0,1,1,0,1,0,1,
+    1,0,0,0,0,1,0,0,
+    1,1,1,1,1,1,0,1,
+    0,0,0,0,0,0,0,0,
+    1,0,1,1,0,1,0,1
+  ];
+  pattern.forEach(function(v){
+    const cell = document.createElement('div');
+    cell.className = 'qr-cell';
+    cell.style.background = v ? 'rgba(255,255,255,0.8)' : 'transparent';
+    grid.appendChild(cell);
+  });
+})();
+
+// ===== SMOOTH SCROLL FOR NAV =====
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
+  anchor.addEventListener('click', function(e){
+    const target = document.querySelector(this.getAttribute('href'));
+    if(target){
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

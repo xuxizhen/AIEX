@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIEX Doc Viewer</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e17;--bg2:#111827;--bg3:rgba(255,255,255,0.04);--cyan:#00e5ff;--gold:#ffd700;--text:#f0f4f8;--text2:rgba(240,244,248,0.6);--text3:rgba(240,244,248,0.35);--border:rgba(255,255,255,0.08);--green:#00e676;--red:#ff5252;--purple:#a78bfa}
+body{font-family:'Noto Sans SC','DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(10,14,23,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:12px}
+.topbar a{color:var(--cyan);text-decoration:none;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px}
+.topbar a:hover{text-decoration:underline}
+.topbar .title{margin-left:auto;font-size:13px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.content{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+.loading{text-align:center;padding:80px 0;color:var(--text3);font-size:15px}
+/* Markdown Styles */
+.md h1{font-size:32px;font-weight:700;margin:32px 0 16px;padding-bottom:12px;border-bottom:2px solid var(--border);color:var(--cyan)}
+.md h2{font-size:24px;font-weight:700;margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);color:var(--text)}
+.md h3{font-size:18px;font-weight:600;margin:28px 0 12px;color:var(--text)}
+.md h4{font-size:15px;font-weight:600;margin:20px 0 8px;color:var(--gold)}
+.md p{font-size:15px;line-height:1.8;margin:12px 0;color:var(--text2)}
+.md strong{color:var(--text);font-weight:600}
+.md em{color:var(--purple);font-style:italic}
+.md a{color:var(--cyan);text-decoration:none}
+.md a:hover{text-decoration:underline}
+.md ul,.md ol{margin:12px 0 12px 24px;color:var(--text2)}
+.md li{margin:6px 0;line-height:1.7;font-size:14px}
+.md li strong{color:var(--text)}
+.md blockquote{margin:16px 0;padding:12px 20px;border-left:3px solid var(--cyan);background:rgba(0,229,255,0.04);border-radius:0 8px 8px 0}
+.md blockquote p{color:var(--text2);margin:0}
+.md code{font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:var(--green)}
+.md pre{margin:16px 0;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow-x:auto}
+.md pre code{background:none;padding:0;font-size:13px;line-height:1.6;color:var(--green)}
+.md table{width:100%;margin:16px 0;border-collapse:collapse;font-size:13px}
+.md thead{background:rgba(0,229,255,0.06)}
+.md th{padding:10px 14px;text-align:left;font-weight:600;color:var(--text);border-bottom:2px solid var(--border);font-size:13px}
+.md td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);font-size:13px}
+.md tr:hover td{background:rgba(255,255,255,0.02)}
+.md hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+.md img{max-width:100%;border-radius:8px}
+/* Task list */
+.md input[type="checkbox"]{margin-right:8px;accent-color:var(--cyan)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="../index.html">&larr; Back to Hub</a>
+  <span class="title" id="filename"></span>
+</div>
+<div class="content">
+  <div class="loading" id="loading">Loading document...</div>
+  <div class="md" id="md-content"></div>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const doc = params.get('doc');
+if (doc) {
+  document.getElementById('filename').textContent = doc;
+  document.title = doc.replace('.md','') + ' | AIEX';
+  fetch('../' + doc)
+    .then(r => {
+      if (!r.ok) throw new Error('File not found');
+      return r.text();
+    })
+    .then(md => {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('md-content').innerHTML = marked.parse(md);
+    })
+    .catch(e => {
+      document.getElementById('loading').textContent = 'Error: ' + e.message;
+    });
+} else {
+  document.getElementById('loading').textContent = 'No document specified. Use ?doc=filename.md';
+}
+</script>
+</body>
+</html>

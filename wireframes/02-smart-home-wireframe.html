@@ -1,0 +1,271 @@
+<h2>智能首页 Wireframe</h2>
+<p class="subtitle">AI 驱动的个性化信息流 — 与传统交易所首页的核心区别</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">📱 智能首页 — 完整布局</div>
+    <div class="mockup-body" style="padding: 0; background: #0a0a1a; max-height: 700px; overflow-y: auto;">
+
+      <!-- Status Bar -->
+      <div style="padding: 8px 16px; display: flex; justify-content: space-between; font-size: 11px; color: #888;">
+        <span>9:41</span>
+        <span>📶 🔋</span>
+      </div>
+
+      <!-- Header -->
+      <div style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-size: 18px; font-weight: 700; color: #fff;">AIEX</div>
+          <div style="font-size: 11px; color: #888;">AI-Powered Exchange</div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <span style="font-size: 18px;">🔔</span>
+          <span style="font-size: 18px;">🔍</span>
+        </div>
+      </div>
+
+      <!-- 资产卡片 -->
+      <div style="margin: 8px 16px; background: linear-gradient(135deg, #1a1040 0%, #2d1b69 100%); border-radius: 16px; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 11px; color: #a78bfa;">总资产 (USDT)</div>
+            <div style="font-size: 24px; font-weight: 700; color: #fff; margin: 4px 0;">12,847.53</div>
+            <div style="font-size: 12px; color: #34d399;">+$347.21 (+2.78%) 今日</div>
+          </div>
+          <div style="width: 80px; height: 40px; position: relative;">
+            <svg viewBox="0 0 80 40" style="width: 100%; height: 100%;">
+              <path d="M0,30 Q10,28 20,25 T40,18 T60,12 T80,8" stroke="#34d399" fill="none" stroke-width="2"/>
+              <path d="M0,30 Q10,28 20,25 T40,18 T60,12 T80,8 V40 H0 Z" fill="url(#greenGrad)" opacity="0.2"/>
+              <defs><linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="transparent"/></linearGradient></defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI 市场快报 -->
+      <div style="margin: 16px 16px 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 14px;">🧠</span>
+            <span style="font-size: 14px; font-weight: 600; color: #fff;">AI 市场快报</span>
+          </div>
+          <span style="font-size: 11px; color: #666;">3分钟前更新</span>
+        </div>
+
+        <!-- 快报卡片1 -->
+        <div style="background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 12px; margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                <span style="background: #ef4444; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px;">⚠️ 风险</span>
+              </div>
+              <div style="font-size: 13px; color: #e0e0e0; line-height: 1.5;">BTC 在 $68,200 遇到强阻力位，4H 级别 RSI 超买。建议减仓或设置止损。</div>
+            </div>
+            <span style="color: #666; font-size: 16px; margin-left: 8px;">›</span>
+          </div>
+        </div>
+
+        <!-- 快报卡片2 -->
+        <div style="background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); border-radius: 12px; padding: 12px; margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                <span style="background: #34d399; color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px;">🔥 机会</span>
+              </div>
+              <div style="font-size: 13px; color: #e0e0e0; line-height: 1.5;">ETH ETF 资金净流入创新高，链上巨鲸持续增持。短期看涨至 $3,800。</div>
+            </div>
+            <span style="color: #666; font-size: 16px; margin-left: 8px;">›</span>
+          </div>
+        </div>
+
+        <!-- 快报卡片3 -->
+        <div style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius: 12px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                <span style="background: #a78bfa; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px;">💡 洞察</span>
+              </div>
+              <div style="font-size: 13px; color: #e0e0e0; line-height: 1.5;">SOL 生态 TVL 本周增长 15%，DeFi 活跃度领先所有 L1。值得关注。</div>
+            </div>
+            <span style="color: #666; font-size: 16px; margin-left: 8px;">›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 我的持仓 AI 建议 -->
+      <div style="margin: 16px 16px 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 14px;">💼</span>
+            <span style="font-size: 14px; font-weight: 600; color: #fff;">持仓 AI 建议</span>
+          </div>
+          <span style="font-size: 11px; color: #a78bfa;">查看全部 ›</span>
+        </div>
+
+        <div style="background: #12122a; border: 1px solid #2a2a4a; border-radius: 12px; padding: 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <div style="width: 28px; height: 28px; background: #f7931a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #fff;">₿</div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; color: #fff; font-weight: 600;">BTC · 0.15 BTC</div>
+              <div style="font-size: 11px; color: #34d399;">+$1,230 (+12.3%)</div>
+            </div>
+          </div>
+          <div style="background: rgba(240,192,64,0.1); border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 12px;">🤖</span>
+            <span style="font-size: 12px; color: #f0c040; line-height: 1.4;">已达阶段止盈线。建议分批止盈 30%，保留底仓。</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 8px;">
+            <button style="flex: 1; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); color: #a78bfa; border-radius: 8px; padding: 6px; font-size: 11px; cursor: pointer;">执行止盈</button>
+            <button style="flex: 1; background: transparent; border: 1px solid #333; color: #888; border-radius: 8px; padding: 6px; font-size: 11px; cursor: pointer;">稍后再看</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 热门策略推荐 -->
+      <div style="margin: 16px 16px 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 14px;">🏆</span>
+            <span style="font-size: 14px; font-weight: 600; color: #fff;">热门策略</span>
+          </div>
+          <span style="font-size: 11px; color: #a78bfa;">跟单广场 ›</span>
+        </div>
+
+        <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px;">
+          <!-- 策略1 -->
+          <div style="min-width: 160px; background: #12122a; border: 1px solid #2a2a4a; border-radius: 12px; padding: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+              <span style="background: #a78bfa; color: #fff; font-size: 9px; padding: 2px 5px; border-radius: 4px;">AI策略</span>
+            </div>
+            <div style="font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 4px;">趋势追踪 Pro</div>
+            <div style="font-size: 20px; color: #34d399; font-weight: 700;">+127.3%</div>
+            <div style="font-size: 10px; color: #888; margin-bottom: 8px;">90日收益 · 胜率 68%</div>
+            <div style="font-size: 10px; color: #888;">跟单人数 1,234</div>
+          </div>
+          <!-- 策略2 -->
+          <div style="min-width: 160px; background: #12122a; border: 1px solid #2a2a4a; border-radius: 12px; padding: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+              <span style="background: #f0c040; color: #000; font-size: 9px; padding: 2px 5px; border-radius: 4px;">真人实盘</span>
+            </div>
+            <div style="font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 4px;">CryptoKing</div>
+            <div style="font-size: 20px; color: #34d399; font-weight: 700;">+89.5%</div>
+            <div style="font-size: 10px; color: #888; margin-bottom: 8px;">90日收益 · 胜率 72%</div>
+            <div style="font-size: 10px; color: #888;">跟单人数 856</div>
+          </div>
+          <!-- 策略3 -->
+          <div style="min-width: 160px; background: #12122a; border: 1px solid #2a2a4a; border-radius: 12px; padding: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+              <span style="background: #a78bfa; color: #fff; font-size: 9px; padding: 2px 5px; border-radius: 4px;">AI策略</span>
+            </div>
+            <div style="font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 4px;">网格量化 V2</div>
+            <div style="font-size: 20px; color: #34d399; font-weight: 700;">+45.2%</div>
+            <div style="font-size: 10px; color: #888; margin-bottom: 8px;">90日收益 · 胜率 81%</div>
+            <div style="font-size: 10px; color: #888;">跟单人数 2,103</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 行情概览 -->
+      <div style="margin: 16px 16px 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 14px; font-weight: 600; color: #fff;">📊 行情</span>
+          <div style="display: flex; gap: 8px;">
+            <span style="font-size: 11px; color: #a78bfa; background: rgba(167,139,250,0.15); padding: 3px 8px; border-radius: 4px;">涨幅榜</span>
+            <span style="font-size: 11px; color: #888; padding: 3px 8px;">跌幅榜</span>
+            <span style="font-size: 11px; color: #888; padding: 3px 8px;">成交量</span>
+          </div>
+        </div>
+
+        <div style="background: #12122a; border-radius: 12px; overflow: hidden;">
+          <div style="display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #1a1a3a;">
+            <div style="width: 28px; height: 28px; background: #f7931a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; margin-right: 10px;">₿</div>
+            <div style="flex: 1;"><div style="font-size: 13px; color: #fff;">BTC</div><div style="font-size: 10px; color: #888;">Bitcoin</div></div>
+            <div style="text-align: right; margin-right: 12px;"><div style="font-size: 13px; color: #fff;">$68,241</div></div>
+            <div style="background: #34d399; color: #000; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; min-width: 60px; text-align: center;">+3.21%</div>
+          </div>
+          <div style="display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #1a1a3a;">
+            <div style="width: 28px; height: 28px; background: #627eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; margin-right: 10px;">Ξ</div>
+            <div style="flex: 1;"><div style="font-size: 13px; color: #fff;">ETH</div><div style="font-size: 10px; color: #888;">Ethereum</div></div>
+            <div style="text-align: right; margin-right: 12px;"><div style="font-size: 13px; color: #fff;">$3,642</div></div>
+            <div style="background: #34d399; color: #000; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; min-width: 60px; text-align: center;">+5.47%</div>
+          </div>
+          <div style="display: flex; align-items: center; padding: 12px;">
+            <div style="width: 28px; height: 28px; background: #9945ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; margin-right: 10px;">S</div>
+            <div style="flex: 1;"><div style="font-size: 13px; color: #fff;">SOL</div><div style="font-size: 10px; color: #888;">Solana</div></div>
+            <div style="text-align: right; margin-right: 12px;"><div style="font-size: 13px; color: #fff;">$178.3</div></div>
+            <div style="background: #34d399; color: #000; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; min-width: 60px; text-align: center;">+8.12%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI 对话入口 -->
+      <div style="margin: 20px 16px; padding-bottom: 70px;">
+        <div style="background: #1a1a3a; border: 1px solid #3a3a5a; border-radius: 24px; padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 16px;">🤖</span>
+          <span style="color: #666; font-size: 13px; flex: 1;">问 AI 任何交易问题...</span>
+          <span style="color: #a78bfa; font-size: 13px;">🎤</span>
+        </div>
+      </div>
+
+      <!-- Bottom Tab Bar -->
+      <div style="position: sticky; bottom: 0; background: #0a0a1a; border-top: 1px solid #1a1a3a; display: flex; justify-content: space-around; padding: 8px 0 20px;">
+        <div style="text-align: center;">
+          <div style="font-size: 20px;">🧠</div>
+          <div style="font-size: 10px; color: #a78bfa;">首页</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 20px;">📈</div>
+          <div style="font-size: 10px; color: #666;">交易</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 20px;">🏆</div>
+          <div style="font-size: 10px; color: #666;">跟单</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 20px;">👤</div>
+          <div style="font-size: 10px; color: #666;">我的</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 右侧设计说明 -->
+  <div>
+    <div class="mockup">
+      <div class="mockup-header">设计说明</div>
+      <div class="mockup-body" style="padding: 20px; font-size: 13px; line-height: 1.8; color: #ccc;">
+
+        <h4 style="color: #a78bfa; margin: 0 0 8px;">与传统交易所首页的区别</h4>
+        <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 16px;">
+          <tr style="border-bottom: 1px solid #333;">
+            <td style="padding: 6px 0; color: #888;">币安/OKX</td>
+            <td style="padding: 6px 0;">行情列表 + Banner 广告</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #333;">
+            <td style="padding: 6px 0; color: #888;">RockFlow</td>
+            <td style="padding: 6px 0;">Bobby AI 对话为主</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; color: #a78bfa; font-weight: 600;">AIEX</td>
+            <td style="padding: 6px 0; color: #a78bfa;">AI 信息流 + 持仓建议 + 策略推荐</td>
+          </tr>
+        </table>
+
+        <h4 style="color: #34d399; margin: 0 0 8px;">首页 5 个模块</h4>
+        <div style="margin-bottom: 16px;">
+          <div style="margin-bottom: 6px;">1️⃣ <strong>资产卡片</strong> — 总览 + 迷你收益曲线</div>
+          <div style="margin-bottom: 6px;">2️⃣ <strong>AI 市场快报</strong> — 每日 3 条 AI 精选洞察（风险/机会/洞察三类标签）</div>
+          <div style="margin-bottom: 6px;">3️⃣ <strong>持仓 AI 建议</strong> — 基于用户实际仓位的个性化建议，带一键操作按钮</div>
+          <div style="margin-bottom: 6px;">4️⃣ <strong>热门策略</strong> — 横滑卡片，AI 策略 + 真人实盘混排</div>
+          <div style="margin-bottom: 6px;">5️⃣ <strong>行情概览</strong> — 涨跌幅/成交量 Tab 切换</div>
+        </div>
+
+        <h4 style="color: #f0c040; margin: 0 0 8px;">AI 入口设计</h4>
+        <div>
+          底部常驻 AI 输入框（类似搜索框），点击后向上滑出半屏对话面板。支持语音输入。这个输入框在<strong>所有 4 个 Tab</strong> 都存在，是全局的。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

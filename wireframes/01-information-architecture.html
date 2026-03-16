@@ -1,0 +1,146 @@
+<h2>信息架构：4-Tab AI 智能中枢</h2>
+<p class="subtitle">整体 App 结构和页面层级</p>
+
+<div class="section">
+  <h3>Tab 结构对比</h3>
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">❌ 旧方案 (PRD v3) — 5 Tab</div>
+      <div class="mockup-body" style="padding: 20px; font-family: monospace; font-size: 13px; line-height: 1.8;">
+        <div style="color: #888; margin-bottom: 12px;">AI 被隔离在单独 Tab，感知弱</div>
+        <div style="display: flex; justify-content: space-around; background: #1a1a2e; padding: 12px; border-radius: 8px;">
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">🏠</div>
+            <div style="color: #aaa;">探索</div>
+          </div>
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">👥</div>
+            <div style="color: #aaa;">跟单</div>
+          </div>
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">📊</div>
+            <div style="color: #aaa;">交易</div>
+          </div>
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">🤖</div>
+            <div style="color: #f0c040;">AI助手</div>
+          </div>
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">👤</div>
+            <div style="color: #aaa;">我的</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; color: #e74c3c; font-size: 11px;">
+          问题：AI 和交易分离，用户要跳转 Tab 才能用 AI；<br/>
+          首页是行情列表，和币安/OKX 无差异
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-header">✅ 新方案 — 4 Tab AI 智能中枢</div>
+      <div class="mockup-body" style="padding: 20px; font-family: monospace; font-size: 13px; line-height: 1.8;">
+        <div style="color: #888; margin-bottom: 12px;">AI 无处不在，首页就是 AI 驱动</div>
+        <div style="display: flex; justify-content: space-around; background: #1a1a2e; padding: 12px; border-radius: 8px;">
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">🧠</div>
+            <div style="color: #a78bfa;">智能首页</div>
+          </div>
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">🏆</div>
+            <div style="color: #aaa;">跟单广场</div>
+          </div>
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">📈</div>
+            <div style="color: #aaa;">交易</div>
+          </div>
+          <div style="text-align: center; font-size: 11px;">
+            <div style="font-size: 20px;">👤</div>
+            <div style="color: #aaa;">我的</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; color: #2ecc71; font-size: 11px;">
+          优势：AI 融入首页和交易；4Tab 更清爽；<br/>
+          每个页面底部有 AI 对话入口
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>页面层级结构</h3>
+  <div class="mockup">
+    <div class="mockup-header">完整页面地图</div>
+    <div class="mockup-body" style="padding: 24px; font-family: monospace; font-size: 12px; line-height: 2.2; color: #e0e0e0;">
+
+      <div style="margin-bottom: 16px;">
+        <span style="color: #a78bfa; font-weight: bold;">🧠 Tab 1: 智能首页</span><br/>
+        <span style="margin-left: 24px;">├─ AI 市场快报（每日 3 条 AI 精选洞察）</span><br/>
+        <span style="margin-left: 24px;">├─ 我的持仓 AI 建议（基于持仓的个性化提醒）</span><br/>
+        <span style="margin-left: 24px;">├─ 热门策略推荐（跟单信号卡片）</span><br/>
+        <span style="margin-left: 24px;">├─ 行情概览（涨跌幅 Top、热门币种）</span><br/>
+        <span style="margin-left: 24px;">├─ <span style="color: #f0c040;">AI 对话入口（底部常驻输入框）</span></span><br/>
+        <span style="margin-left: 24px;">└─ → 币种详情页（K线 + AI 分析 + 快捷交易）</span>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <span style="color: #34d399; font-weight: bold;">🏆 Tab 2: 跟单广场</span><br/>
+        <span style="margin-left: 24px;">├─ 实盘交易者排行（真人带单）</span><br/>
+        <span style="margin-left: 24px;">├─ AI 策略专区（AI 策略卡片 + 历史表现）</span><br/>
+        <span style="margin-left: 24px;">├─ 我的跟单（已跟单列表 + 收益统计）</span><br/>
+        <span style="margin-left: 24px;">├─ → 交易者详情页（历史交易 + 收益曲线）</span><br/>
+        <span style="margin-left: 24px;">└─ → 申请成为带单者</span>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <span style="color: #60a5fa; font-weight: bold;">📈 Tab 3: 交易</span><br/>
+        <span style="margin-left: 24px;">├─ 现货交易（买入/卖出 + AI 辅助）</span><br/>
+        <span style="margin-left: 24px;">├─ 合约交易（开多/开空 + AI 风控）</span><br/>
+        <span style="margin-left: 24px;">├─ <span style="color: #f0c040;">AI 自然语言下单栏</span></span><br/>
+        <span style="margin-left: 24px;">├─ → 订单确认页（AI 风险评估）</span><br/>
+        <span style="margin-left: 24px;">└─ → 持仓管理（AI 止盈止损建议）</span>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <span style="color: #f472b6; font-weight: bold;">👤 Tab 4: 我的</span><br/>
+        <span style="margin-left: 24px;">├─ 资产总览（总资产 + 盈亏曲线）</span><br/>
+        <span style="margin-left: 24px;">├─ 交易历史</span><br/>
+        <span style="margin-left: 24px;">├─ AI 订阅管理（4 档会员）</span><br/>
+        <span style="margin-left: 24px;">├─ AI 授权等级设置（L1-L4）</span><br/>
+        <span style="margin-left: 24px;">├─ 账户绑定（Toobit 账户）</span><br/>
+        <span style="margin-left: 24px;">└─ 设置 / 帮助 / 关于</span>
+      </div>
+
+      <div>
+        <span style="color: #f0c040; font-weight: bold;">🤖 全局：AI 对话浮层</span><br/>
+        <span style="margin-left: 24px;">├─ 任何页面底部输入框唤起</span><br/>
+        <span style="margin-left: 24px;">├─ 半屏/全屏切换</span><br/>
+        <span style="margin-left: 24px;">├─ 上下文感知（在交易页问 AI = 交易相关回答）</span><br/>
+        <span style="margin-left: 24px;">└─ 行动卡片（下单预览、跟单推荐、止盈止损设置）</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>AI 对话的设计哲学</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3); border-radius: 12px; padding: 16px;">
+      <h4 style="color: #a78bfa; margin: 0 0 8px 0;">不是独立 Chat App</h4>
+      <p style="color: #ccc; font-size: 13px; margin: 0;">AI 对话不是一个单独的页面或 Tab。它是一个<strong>浮层</strong>，从任何页面的底部输入框唤起，向上滑出半屏对话面板。类似 iPhone 的控制中心。</p>
+    </div>
+    <div style="background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); border-radius: 12px; padding: 16px;">
+      <h4 style="color: #34d399; margin: 0 0 8px 0;">上下文感知</h4>
+      <p style="color: #ccc; font-size: 13px; margin: 0;">在交易页唤起 AI → 自动获取当前交易对、仓位信息。在首页唤起 AI → 给出市场概览。不需要用户重复描述场景。</p>
+    </div>
+    <div style="background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); border-radius: 12px; padding: 16px;">
+      <h4 style="color: #60a5fa; margin: 0 0 8px 0;">行动卡片，不只是文字</h4>
+      <p style="color: #ccc; font-size: 13px; margin: 0;">AI 回复不只是文字。当涉及操作时，返回<strong>可交互的行动卡片</strong>：下单预览（一键确认）、策略推荐（一键跟单）、止盈止损设置（滑块调整）。</p>
+    </div>
+    <div style="background: rgba(244,114,182,0.1); border: 1px solid rgba(244,114,182,0.3); border-radius: 12px; padding: 16px;">
+      <h4 style="color: #f472b6; margin: 0 0 8px 0;">渐进式授权</h4>
+      <p style="color: #ccc; font-size: 13px; margin: 0;">L1 只读（AI 给建议）→ L2 确认执行（AI 准备好订单你确认）→ L3 自动执行+通知 → L4 全自动。用户自己控制 AI 的权限边界。</p>
+    </div>
+  </div>
+</div>

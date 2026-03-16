@@ -1,0 +1,224 @@
+<h2>AI 策略分层 + 订阅转化设计</h2>
+<p class="subtitle">免费策略引流 → 高级策略付费 → 跟单广场成为订阅转化核心场景</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">📱 AI 策略 Tab — 分层展示</div>
+    <div class="mockup-body" style="padding: 0; background: #0a0a1a; max-height: 700px; overflow-y: auto;">
+
+      <!-- Header -->
+      <div style="padding: 12px 16px 0;">
+        <div style="display: flex; gap: 0; margin-bottom: 14px; border-bottom: 1px solid #1a1a3a;">
+          <div style="flex: 1; text-align: center; padding: 10px 0; font-size: 13px; color: #888;">实盘交易者</div>
+          <div style="flex: 1; text-align: center; padding: 10px 0; font-size: 13px; color: #a78bfa; font-weight: 600; border-bottom: 2px solid #a78bfa;">AI 策略</div>
+          <div style="flex: 1; text-align: center; padding: 10px 0; font-size: 13px; color: #888;">我的跟单</div>
+        </div>
+      </div>
+
+      <!-- 免费策略区 -->
+      <div style="padding: 0 16px;">
+        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 10px;">
+          <span style="font-size: 13px; font-weight: 600; color: #fff;">🆓 免费策略</span>
+          <span style="font-size: 10px; color: #888; background: #1a1a3a; padding: 2px 8px; border-radius: 4px;">所有用户可用</span>
+        </div>
+
+        <!-- 免费策略1 -->
+        <div style="background: #12122a; border: 1px solid #2a2a4a; border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #34d399, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px;">📐</div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; color: #fff; font-weight: 600;">基础网格策略</div>
+              <div style="font-size: 11px; color: #888;">BTC/ETH · 现货 · 震荡行情适用</div>
+            </div>
+            <button style="background: #34d399; color: #000; border: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">跟单</button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; text-align: center;">
+            <div><div style="font-size: 10px; color: #888;">30日收益</div><div style="font-size: 16px; color: #34d399; font-weight: 700;">+18.5%</div></div>
+            <div><div style="font-size: 10px; color: #888;">胜率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">75%</div></div>
+            <div><div style="font-size: 10px; color: #888;">跟单者</div><div style="font-size: 16px; color: #fff; font-weight: 700;">3,412</div></div>
+          </div>
+        </div>
+
+        <!-- 免费策略2 -->
+        <div style="background: #12122a; border: 1px solid #2a2a4a; border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #60a5fa, #3b82f6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px;">📊</div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; color: #fff; font-weight: 600;">定投智选</div>
+              <div style="font-size: 11px; color: #888;">Top 10 币种 · 现货 · 长期稳健</div>
+            </div>
+            <button style="background: #34d399; color: #000; border: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">跟单</button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; text-align: center;">
+            <div><div style="font-size: 10px; color: #888;">30日收益</div><div style="font-size: 16px; color: #34d399; font-weight: 700;">+12.3%</div></div>
+            <div><div style="font-size: 10px; color: #888;">胜率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">82%</div></div>
+            <div><div style="font-size: 10px; color: #888;">跟单者</div><div style="font-size: 16px; color: #fff; font-weight: 700;">5,678</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分割线 + 高级策略区 -->
+      <div style="padding: 0 16px; margin-top: 16px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+          <span style="font-size: 13px; font-weight: 600; color: #f0c040;">👑 高级 AI 策略</span>
+          <span style="font-size: 10px; color: #f0c040; background: rgba(240,192,64,0.12); padding: 2px 8px; border-radius: 4px;">PRO 订阅专享</span>
+        </div>
+
+        <!-- 高级策略1 - 带锁 -->
+        <div style="background: #12122a; border: 1px solid rgba(240,192,64,0.25); border-radius: 14px; padding: 14px; margin-bottom: 10px; position: relative;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #a78bfa, #7c3aed); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px;">🧠</div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 13px; color: #fff; font-weight: 600;">趋势追踪 Pro</span>
+                <span style="font-size: 9px; color: #f0c040; background: rgba(240,192,64,0.15); padding: 1px 5px; border-radius: 3px;">🔒 PRO</span>
+              </div>
+              <div style="font-size: 11px; color: #a78bfa;">多币种 · 现货+合约 · 多时间框架</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; text-align: center; margin-bottom: 8px;">
+            <div><div style="font-size: 10px; color: #888;">90日收益</div><div style="font-size: 16px; color: #34d399; font-weight: 700;">+127.3%</div></div>
+            <div><div style="font-size: 10px; color: #888;">胜率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">68%</div></div>
+            <div><div style="font-size: 10px; color: #888;">夏普比率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">2.4</div></div>
+          </div>
+          <div style="font-size: 11px; color: #888; line-height: 1.5; margin-bottom: 10px;">
+            基于多时间框架趋势分析 + 链上巨鲸监控 + 市场情绪指标，自动识别趋势起点并动态调仓。
+          </div>
+          <!-- 解锁按钮 -->
+          <button style="width: 100%; padding: 8px; background: linear-gradient(135deg, #f0c040, #f59e0b); border: none; border-radius: 8px; color: #000; font-size: 12px; font-weight: 700; cursor: pointer;">🔓 升级 PRO 解锁此策略 — $9.9/月起</button>
+        </div>
+
+        <!-- 高级策略2 - 带锁 -->
+        <div style="background: #12122a; border: 1px solid rgba(240,192,64,0.25); border-radius: 14px; padding: 14px; margin-bottom: 10px; position: relative;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #f472b6, #ec4899); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px;">🎯</div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 13px; color: #fff; font-weight: 600;">Alpha 猎手</span>
+                <span style="font-size: 9px; color: #f0c040; background: rgba(240,192,64,0.15); padding: 1px 5px; border-radius: 3px;">🔒 ELITE</span>
+              </div>
+              <div style="font-size: 11px; color: #f472b6;">链上监控 · 早期发现 · 高风险高回报</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; text-align: center; margin-bottom: 8px;">
+            <div><div style="font-size: 10px; color: #888;">90日收益</div><div style="font-size: 16px; color: #34d399; font-weight: 700;">+312.7%</div></div>
+            <div><div style="font-size: 10px; color: #888;">胜率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">54%</div></div>
+            <div><div style="font-size: 10px; color: #888;">夏普比率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">1.8</div></div>
+          </div>
+          <button style="width: 100%; padding: 8px; background: linear-gradient(135deg, #a78bfa, #7c3aed); border: none; border-radius: 8px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">🔓 升级 ELITE 解锁 — $29.9/月起</button>
+        </div>
+
+        <!-- 高级策略3 - 带锁 -->
+        <div style="background: #12122a; border: 1px solid rgba(240,192,64,0.25); border-radius: 14px; padding: 14px; margin-bottom: 16px; position: relative;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #f0c040, #f59e0b); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px;">⚡</div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 13px; color: #fff; font-weight: 600;">全自动量化套利</span>
+                <span style="font-size: 9px; color: #f0c040; background: rgba(240,192,64,0.15); padding: 1px 5px; border-radius: 3px;">🔒 ELITE</span>
+              </div>
+              <div style="font-size: 11px; color: #f0c040;">跨市场套利 · 极低风险 · 稳定收益</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; text-align: center; margin-bottom: 8px;">
+            <div><div style="font-size: 10px; color: #888;">90日收益</div><div style="font-size: 16px; color: #34d399; font-weight: 700;">+35.6%</div></div>
+            <div><div style="font-size: 10px; color: #888;">胜率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">91%</div></div>
+            <div><div style="font-size: 10px; color: #888;">夏普比率</div><div style="font-size: 16px; color: #fff; font-weight: 700;">4.2</div></div>
+          </div>
+          <button style="width: 100%; padding: 8px; background: linear-gradient(135deg, #a78bfa, #7c3aed); border: none; border-radius: 8px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer;">🔓 升级 ELITE 解锁 — $29.9/月起</button>
+        </div>
+      </div>
+
+      <!-- Bottom Tab Bar -->
+      <div style="position: sticky; bottom: 0; background: #0a0a1a; border-top: 1px solid #1a1a3a; display: flex; justify-content: space-around; padding: 8px 0 20px;">
+        <div style="text-align: center;"><div style="font-size: 20px;">🧠</div><div style="font-size: 10px; color: #666;">首页</div></div>
+        <div style="text-align: center;"><div style="font-size: 20px;">📈</div><div style="font-size: 10px; color: #666;">交易</div></div>
+        <div style="text-align: center;"><div style="font-size: 20px;">🏆</div><div style="font-size: 10px; color: #a78bfa;">跟单</div></div>
+        <div style="text-align: center;"><div style="font-size: 20px;">👤</div><div style="font-size: 10px; color: #666;">我的</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：订阅层级 + 转化策略 -->
+  <div>
+    <div class="mockup">
+      <div class="mockup-header">💎 订阅层级 × AI 策略权限</div>
+      <div class="mockup-body" style="padding: 16px; font-size: 12px; color: #ccc;">
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+          <thead>
+            <tr style="border-bottom: 1px solid #333;">
+              <th style="text-align: left; padding: 8px 4px; color: #888;">功能</th>
+              <th style="text-align: center; padding: 8px 4px; color: #34d399;">Free</th>
+              <th style="text-align: center; padding: 8px 4px; color: #60a5fa;">PRO<br/><span style="font-size: 9px; color: #888;">$9.9/月</span></th>
+              <th style="text-align: center; padding: 8px 4px; color: #a78bfa;">ELITE<br/><span style="font-size: 9px; color: #888;">$29.9/月</span></th>
+              <th style="text-align: center; padding: 8px 4px; color: #f0c040;">MAX<br/><span style="font-size: 9px; color: #888;">$99.9/月</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #1a1a3a;">
+              <td style="padding: 6px 4px;">免费 AI 策略</td>
+              <td style="text-align: center; color: #34d399;">2个</td>
+              <td style="text-align: center; color: #34d399;">全部</td>
+              <td style="text-align: center; color: #34d399;">全部</td>
+              <td style="text-align: center; color: #34d399;">全部</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #1a1a3a;">
+              <td style="padding: 6px 4px;">高级 AI 策略</td>
+              <td style="text-align: center; color: #ef4444;">🔒</td>
+              <td style="text-align: center; color: #34d399;">3个</td>
+              <td style="text-align: center; color: #34d399;">全部</td>
+              <td style="text-align: center; color: #34d399;">全部</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #1a1a3a;">
+              <td style="padding: 6px 4px;">同时跟单数</td>
+              <td style="text-align: center;">1</td>
+              <td style="text-align: center;">5</td>
+              <td style="text-align: center;">15</td>
+              <td style="text-align: center;">无限</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #1a1a3a;">
+              <td style="padding: 6px 4px;">跟单最大金额</td>
+              <td style="text-align: center;">$500</td>
+              <td style="text-align: center;">$5,000</td>
+              <td style="text-align: center;">$50,000</td>
+              <td style="text-align: center;">无限</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #1a1a3a;">
+              <td style="padding: 6px 4px;">AI 对话次数/日</td>
+              <td style="text-align: center;">10</td>
+              <td style="text-align: center;">100</td>
+              <td style="text-align: center;">无限</td>
+              <td style="text-align: center;">无限</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #1a1a3a;">
+              <td style="padding: 6px 4px;">AI 自动交易</td>
+              <td style="text-align: center; color: #ef4444;">🔒</td>
+              <td style="text-align: center; color: #ef4444;">🔒</td>
+              <td style="text-align: center; color: #34d399;">✓</td>
+              <td style="text-align: center; color: #34d399;">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 4px;">专属 AI 策略定制</td>
+              <td style="text-align: center; color: #ef4444;">🔒</td>
+              <td style="text-align: center; color: #ef4444;">🔒</td>
+              <td style="text-align: center; color: #ef4444;">🔒</td>
+              <td style="text-align: center; color: #34d399;">✓</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mockup" style="margin-top: 16px;">
+      <div class="mockup-header">🔄 转化漏斗设计</div>
+      <div class="mockup-body" style="padding: 16px; font-size: 12px; line-height: 2; color: #ccc;">
+        <div style="margin-bottom: 6px;">1️⃣ <strong>免费体验</strong> — 2个免费策略 + 10次/日 AI 对话，让用户体验 AI 价值</div>
+        <div style="margin-bottom: 6px;">2️⃣ <strong>看到锁定策略</strong> — 高收益策略可见但不可用，展示历史业绩制造 FOMO</div>
+        <div style="margin-bottom: 6px;">3️⃣ <strong>触达付费墙</strong> — 点击跟单 → 弹出订阅页，展示对比价格（vs Cryptohopper $24-107/月）</div>
+        <div style="margin-bottom: 6px;">4️⃣ <strong>低门槛入门</strong> — PRO $9.9/月解锁大部分能力，首月 $1 体验价</div>
+        <div>5️⃣ <strong>升级路径</strong> — 用了 PRO 后想用更多策略/更大金额 → 自然升级 ELITE</div>
+      </div>
+    </div>
+  </div>
+</div>

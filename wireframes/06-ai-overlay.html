@@ -1,0 +1,167 @@
+<h2>AI 对话浮层设计</h2>
+<p class="subtitle">全局可唤起的 AI 半屏面板 — 上下文感知 + 行动卡片</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">📱 从交易页唤起 AI 对话</div>
+    <div class="mockup-body" style="padding: 0; background: #0a0a1a; max-height: 700px; overflow-y: auto; position: relative;">
+
+      <!-- 底层：交易页（模糊化） -->
+      <div style="filter: brightness(0.4); padding: 16px;">
+        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+          <div style="width: 20px; height: 20px; background: #f7931a; border-radius: 50%;"></div>
+          <span style="font-size: 14px; color: #666;">BTC/USDT</span>
+        </div>
+        <div style="font-size: 22px; color: #444; font-weight: 700;">68,241.50</div>
+        <div style="height: 60px; background: #0f0f2a; border-radius: 8px; margin-top: 8px;"></div>
+      </div>
+
+      <!-- AI 浮层 -->
+      <div style="background: #12122a; border-top: 1px solid #3a3a5a; border-radius: 20px 20px 0 0; padding: 0; min-height: 480px;">
+
+        <!-- 拖动条 -->
+        <div style="display: flex; justify-content: center; padding: 10px 0 6px;">
+          <div style="width: 36px; height: 4px; background: #3a3a5a; border-radius: 2px;"></div>
+        </div>
+
+        <!-- 头部 -->
+        <div style="padding: 0 16px 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a3a;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 16px;">🤖</span>
+            <span style="font-size: 14px; font-weight: 600; color: #fff;">AI 助手</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 10px; color: #a78bfa; background: rgba(167,139,250,0.15); padding: 3px 8px; border-radius: 4px;">上下文: BTC/USDT 交易页</span>
+            <span style="font-size: 16px; color: #888; cursor: pointer;">⤢</span>
+          </div>
+        </div>
+
+        <!-- 对话内容 -->
+        <div style="padding: 12px 16px; max-height: 300px; overflow-y: auto;">
+
+          <!-- 用户消息 -->
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+            <div style="background: #a78bfa; color: #fff; padding: 8px 12px; border-radius: 14px 14px 4px 14px; max-width: 75%; font-size: 13px;">
+              BTC 现在能买吗？帮我分析一下
+            </div>
+          </div>
+
+          <!-- AI 回复 -->
+          <div style="margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+              <span style="font-size: 12px;">🤖</span>
+              <span style="font-size: 11px; color: #888;">AI 助手</span>
+            </div>
+            <div style="background: #1a1a3a; padding: 12px; border-radius: 4px 14px 14px 14px; max-width: 90%; font-size: 12px; color: #e0e0e0; line-height: 1.6;">
+              基于当前 BTC/USDT 的分析：
+
+              <div style="margin: 10px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div style="background: rgba(52,211,153,0.08); border-radius: 8px; padding: 8px;">
+                  <div style="font-size: 10px; color: #888;">趋势</div>
+                  <div style="font-size: 13px; color: #34d399; font-weight: 600;">短期偏多 📈</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 8px;">
+                  <div style="font-size: 10px; color: #888;">AI 评分</div>
+                  <div style="font-size: 13px; color: #f0c040; font-weight: 600;">76/100</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 8px;">
+                  <div style="font-size: 10px; color: #888;">支撑位</div>
+                  <div style="font-size: 13px; color: #fff; font-weight: 600;">$66,800</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 8px;">
+                  <div style="font-size: 10px; color: #888;">阻力位</div>
+                  <div style="font-size: 13px; color: #fff; font-weight: 600;">$69,200</div>
+                </div>
+              </div>
+
+              <div style="font-size: 12px; color: #ccc; line-height: 1.5;">
+                综合技术面和链上数据，当前价位可以小仓位建仓，建议仓位不超过总资金的 30%，止损设在 $66,500。
+              </div>
+            </div>
+          </div>
+
+          <!-- AI 行动卡片 -->
+          <div style="margin-bottom: 12px;">
+            <div style="background: linear-gradient(135deg, rgba(167,139,250,0.1), rgba(52,211,153,0.1)); border: 1px solid rgba(167,139,250,0.25); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                <span style="font-size: 12px;">⚡</span>
+                <span style="font-size: 12px; color: #a78bfa; font-weight: 600;">建议订单</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; margin-bottom: 10px;">
+                <div><span style="color: #888;">方向</span> <span style="color: #34d399; font-weight: 600;">买入</span></div>
+                <div><span style="color: #888;">数量</span> <span style="color: #fff;">0.03 BTC</span></div>
+                <div><span style="color: #888;">价格</span> <span style="color: #fff;">$68,241 (市价)</span></div>
+                <div><span style="color: #888;">止损</span> <span style="color: #ef4444;">$66,500</span></div>
+                <div><span style="color: #888;">金额</span> <span style="color: #fff;">≈ $2,047</span></div>
+                <div><span style="color: #888;">止盈</span> <span style="color: #34d399;">$72,000</span></div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button style="flex: 1; padding: 8px; background: linear-gradient(135deg, #34d399, #059669); border: none; border-radius: 8px; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;">✓ 确认下单</button>
+                <button style="flex: 1; padding: 8px; background: transparent; border: 1px solid #3a3a5a; border-radius: 8px; color: #888; font-size: 12px; cursor: pointer;">修改参数</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 输入框 -->
+        <div style="padding: 8px 16px 24px; border-top: 1px solid #1a1a3a;">
+          <div style="background: #1a1a3a; border: 1px solid #3a3a5a; border-radius: 20px; padding: 10px 14px; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 13px; color: #666; flex: 1;">继续对话...</span>
+            <span style="color: #a78bfa; font-size: 14px;">🎤</span>
+            <span style="color: #a78bfa; font-size: 14px;">➤</span>
+          </div>
+          <!-- 快捷操作 -->
+          <div style="display: flex; gap: 6px; margin-top: 8px; overflow-x: auto;">
+            <span style="font-size: 10px; color: #a78bfa; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2); padding: 4px 10px; border-radius: 16px; white-space: nowrap;">加大仓位</span>
+            <span style="font-size: 10px; color: #a78bfa; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2); padding: 4px 10px; border-radius: 16px; white-space: nowrap;">看看 ETH</span>
+            <span style="font-size: 10px; color: #a78bfa; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2); padding: 4px 10px; border-radius: 16px; white-space: nowrap;">设置提醒</span>
+            <span style="font-size: 10px; color: #a78bfa; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2); padding: 4px 10px; border-radius: 16px; white-space: nowrap;">今日行情</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 右侧：不同场景的上下文感知 + 设计说明 -->
+  <div>
+    <div class="mockup">
+      <div class="mockup-header">🧠 上下文感知 — 不同页面唤起效果</div>
+      <div class="mockup-body" style="padding: 16px; font-size: 12px; color: #ccc; line-height: 1.8;">
+
+        <div style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+          <div style="color: #a78bfa; font-weight: 600; margin-bottom: 4px;">📈 从交易页唤起</div>
+          <div style="color: #ccc;">自动获取当前交易对、持仓信息。快捷操作：下单、设止损、分析币种。行动卡片可直接下单。</div>
+        </div>
+
+        <div style="background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+          <div style="color: #34d399; font-weight: 600; margin-bottom: 4px;">🧠 从首页唤起</div>
+          <div style="color: #ccc;">给出市场概览和持仓建议。快捷操作：今日热点、我的持仓分析、推荐策略。</div>
+        </div>
+
+        <div style="background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.2); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+          <div style="color: #f0c040; font-weight: 600; margin-bottom: 4px;">🏆 从跟单广场唤起</div>
+          <div style="color: #ccc;">推荐适合的策略组合。快捷操作：帮我选策略、分析这个交易者、风险评估。</div>
+        </div>
+
+        <div style="background: rgba(244,114,182,0.08); border: 1px solid rgba(244,114,182,0.2); border-radius: 10px; padding: 12px;">
+          <div style="color: #f472b6; font-weight: 600; margin-bottom: 4px;">👤 从我的页面唤起</div>
+          <div style="color: #ccc;">总资产分析和建议。快捷操作：资产报告、优化持仓、历史复盘。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup" style="margin-top: 16px;">
+      <div class="mockup-header">交互细节</div>
+      <div class="mockup-body" style="padding: 16px; font-size: 12px; line-height: 1.8; color: #ccc;">
+        <div style="margin-bottom: 8px;">📐 <strong>半屏 / 全屏</strong> — 默认半屏，向上拖动可全屏，向下拖动收起</div>
+        <div style="margin-bottom: 8px;">🔄 <strong>上下文标签</strong> — 顶部显示当前感知的页面上下文（可手动切换）</div>
+        <div style="margin-bottom: 8px;">⚡ <strong>行动卡片</strong> — AI 分析后直接给出可执行的建议订单，一键确认</div>
+        <div style="margin-bottom: 8px;">💬 <strong>快捷 Chips</strong> — 根据上下文动态生成常用操作按钮</div>
+        <div style="margin-bottom: 8px;">🎤 <strong>语音输入</strong> — 支持语音转文字下单和提问</div>
+        <div>🔔 <strong>授权等级感知</strong> — L1 时行动卡片只有"查看"；L2 有"确认下单"；L3/L4 AI 可自动执行</div>
+      </div>
+    </div>
+  </div>
+</div>

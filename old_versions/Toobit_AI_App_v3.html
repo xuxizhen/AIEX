@@ -1,0 +1,2939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toobit AI - 智能交易助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0e17;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background: #0a0e17;
+            border-radius: 40px;
+            border: 12px solid #1a1a1a;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 28px;
+            background: #0a0e17;
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+        }
+
+        .app-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0a0e17;
+            padding-top: 10px;
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            padding-bottom: 70px;
+        }
+
+        .tab-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-pane {
+            display: none;
+            padding: 16px;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            background: #131a2b;
+            border-top: 1px solid #1e2a3a;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            font-size: 11px;
+            color: #8892a4;
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            color: #00d4aa;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        /* Colors & Typography */
+        .color-accent { color: #00d4aa; }
+        .color-blue { color: #2e86c1; }
+        .color-red { color: #ff4d4d; }
+        .color-green { color: #00d4aa; }
+        .color-orange { color: #f0a030; }
+        .color-dim { color: #8892a4; }
+
+        .text-sm { font-size: 12px; }
+        .text-base { font-size: 14px; }
+        .text-lg { font-size: 16px; }
+        .text-xl { font-size: 18px; }
+        .text-2xl { font-size: 20px; }
+
+        .font-bold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+
+        /* Cards */
+        .card {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-green { background: rgba(0, 212, 170, 0.1); color: #00d4aa; }
+        .badge-red { background: rgba(255, 77, 77, 0.1); color: #ff4d4d; }
+        .badge-orange { background: rgba(240, 160, 48, 0.1); color: #f0a030; }
+        .badge-blue { background: rgba(46, 134, 193, 0.1); color: #2e86c1; }
+        .badge-gray { background: rgba(136, 146, 164, 0.1); color: #8892a4; }
+
+        .btn {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .btn-green {
+            background: #00d4aa;
+            color: #0a0e17;
+        }
+
+        .btn-green:hover {
+            background: #00c899;
+        }
+
+        .btn-red {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #1e2a3a;
+            color: #e2e8f0;
+        }
+
+        .btn-outline:hover {
+            border-color: #00d4aa;
+        }
+
+        .btn-sm {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .input-box {
+            background: #0a0e17;
+            border: 1px solid #1e2a3a;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #e2e8f0;
+            font-size: 13px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .input-box::placeholder {
+            color: #8892a4;
+        }
+
+        .subtab-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .subtab-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .subtab {
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid #1e2a3a;
+            border-radius: 6px;
+            color: #8892a4;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .subtab.active {
+            background: #00d4aa;
+            color: #0a0e17;
+            border-color: #00d4aa;
+        }
+
+        .subtab:hover {
+            border-color: #00d4aa;
+        }
+
+        /* Tab 1: 探索 */
+        .asset-card {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .asset-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .asset-label {
+            color: #8892a4;
+            font-size: 12px;
+        }
+
+        .asset-value {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .asset-chart {
+            width: 100%;
+            height: 40px;
+            margin-top: 12px;
+        }
+
+        .daily-hot-title {
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .hotspot-card {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .hotspot-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .hotspot-icon {
+            font-size: 18px;
+            min-width: 24px;
+        }
+
+        .hotspot-title {
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .hotspot-summary {
+            color: #8892a4;
+            font-size: 12px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .hotspot-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hotspot-verdict {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .verdict-bullish {
+            background: rgba(0, 212, 170, 0.1);
+            color: #00d4aa;
+        }
+
+        .verdict-bearish {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+        }
+
+        .verdict-neutral {
+            background: rgba(136, 146, 164, 0.1);
+            color: #8892a4;
+        }
+
+        .hotspot-action {
+            font-size: 12px;
+            color: #00d4aa;
+            cursor: pointer;
+        }
+
+        .coin-item {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .coin-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
+        }
+
+        .coin-info {
+            flex: 1;
+        }
+
+        .coin-name {
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .coin-code {
+            color: #8892a4;
+            font-size: 11px;
+        }
+
+        .coin-price {
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .coin-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .change-up {
+            color: #00d4aa;
+        }
+
+        .change-down {
+            color: #ff4d4d;
+        }
+
+        .strategy-card {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 14px;
+            margin-right: 12px;
+            min-width: 240px;
+            flex-shrink: 0;
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .strategy-name {
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .strategy-risk {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .risk-low {
+            background: rgba(0, 212, 170, 0.1);
+            color: #00d4aa;
+        }
+
+        .risk-medium {
+            background: rgba(240, 160, 48, 0.1);
+            color: #f0a030;
+        }
+
+        .strategy-stats {
+            color: #8892a4;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .strategy-stats-value {
+            color: #00d4aa;
+            font-weight: 600;
+        }
+
+        .strategy-followers {
+            color: #8892a4;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            gap: 0;
+            margin-bottom: 16px;
+        }
+
+        .horizontal-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Tab 2: 跟单广场 */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .section-link {
+            color: #00d4aa;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .time-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-pill {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid #1e2a3a;
+            border-radius: 6px;
+            color: #8892a4;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-pill.active {
+            background: #00d4aa;
+            color: #0a0e17;
+            border-color: #00d4aa;
+        }
+
+        .sort-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .sort-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .trader-card {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .trader-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1e2a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .trader-info {
+            flex: 1;
+        }
+
+        .trader-name {
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .level-badge {
+            font-size: 12px;
+        }
+
+        .trader-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .tag {
+            background: rgba(0, 212, 170, 0.08);
+            color: #00d4aa;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .trader-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #8892a4;
+            font-size: 12px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1e2a3a;
+        }
+
+        .trader-stat-item {
+            text-align: center;
+        }
+
+        .trader-stat-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .trader-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .trader-buttons .btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .my-follow-banner {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .banner-row {
+            display: flex;
+            justify-content: space-between;
+            color: #8892a4;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .banner-label {
+            color: #8892a4;
+        }
+
+        .banner-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .profit-value {
+            color: #00d4aa;
+            font-weight: 600;
+        }
+
+        /* Tab 3: 交易 */
+        .price-header {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .coin-selector {
+            background: transparent;
+            border: 1px solid #1e2a3a;
+            color: #e2e8f0;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .price-right {
+            text-align: right;
+        }
+
+        .current-price {
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .ai-brief {
+            background: #131a2b;
+            border-left: 3px solid #00d4aa;
+            border: 1px solid #1e2a3a;
+            border-left: 3px solid #00d4aa;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #8892a4;
+            line-height: 1.4;
+        }
+
+        .chart-placeholder {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-period {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .time-period::-webkit-scrollbar {
+            display: none;
+        }
+
+        .time-btn {
+            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid #1e2a3a;
+            border-radius: 4px;
+            color: #8892a4;
+            font-size: 11px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .time-btn.active {
+            background: #00d4aa;
+            color: #0a0e17;
+            border-color: #00d4aa;
+        }
+
+        .ai-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+        }
+
+        .ai-input-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #e2e8f0;
+            font-size: 13px;
+        }
+
+        .ai-input-field::placeholder {
+            color: #8892a4;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #1e2a3a;
+            background: transparent;
+            color: #8892a4;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: #00d4aa;
+            color: #0a0e17;
+            border-color: #00d4aa;
+        }
+
+        .toggle-btn.active.sell {
+            background: #ff4d4d;
+        }
+
+        .toggle-btn.active.short {
+            background: #ff4d4d;
+        }
+
+        .order-type {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .order-type-btn {
+            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid #1e2a3a;
+            color: #8892a4;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .order-type-btn.active {
+            background: #00d4aa;
+            color: #0a0e17;
+            border-color: #00d4aa;
+        }
+
+        .input-row {
+            margin-bottom: 12px;
+        }
+
+        .input-label {
+            color: #8892a4;
+            font-size: 11px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .amount-preset {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .amount-btn {
+            flex: 1;
+            padding: 6px;
+            background: transparent;
+            border: 1px solid #1e2a3a;
+            color: #8892a4;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .amount-btn.active {
+            background: #00d4aa;
+            color: #0a0e17;
+        }
+
+        .available-row {
+            color: #8892a4;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        .available-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .ai-suggestion-card {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ai-suggestion-header {
+            color: #00d4aa;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-row {
+            display: flex;
+            justify-content: space-between;
+            color: #8892a4;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .suggestion-label {
+            color: #8892a4;
+        }
+
+        .suggestion-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .suggestion-pct {
+            color: #ff4d4d;
+        }
+
+        .suggestion-pct.gain {
+            color: #00d4aa;
+        }
+
+        .adopt-btn {
+            width: 100%;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid #00d4aa;
+            color: #00d4aa;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .buy-btn-large {
+            width: 100%;
+            padding: 14px;
+            background: #00d4aa;
+            color: #0a0e17;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: background 0.2s;
+        }
+
+        .buy-btn-large:hover {
+            background: #00c899;
+        }
+
+        .sell-btn-large {
+            background: #ff4d4d;
+        }
+
+        .sell-btn-large:hover {
+            background: #ff3333;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .action-row .btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        .leverage-section {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .leverage-header {
+            color: #e2e8f0;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .leverage-display {
+            text-align: center;
+            color: #00d4aa;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .leverage-slider {
+            width: 100%;
+            height: 4px;
+            background: #1e2a3a;
+            border-radius: 2px;
+            appearance: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .leverage-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #00d4aa;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .leverage-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #00d4aa;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .risk-indicator {
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .risk-low {
+            background: rgba(0, 212, 170, 0.1);
+            color: #00d4aa;
+        }
+
+        .risk-medium {
+            background: rgba(240, 160, 48, 0.1);
+            color: #f0a030;
+        }
+
+        .risk-high {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+        }
+
+        .liquidation-text {
+            color: #8892a4;
+            font-size: 11px;
+        }
+
+        /* 跟单 positions */
+        .follow-section-header {
+            color: #e2e8f0;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #1e2a3a;
+        }
+
+        .position-card {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .position-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .position-trader {
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .position-coin {
+            color: #8892a4;
+            font-size: 12px;
+        }
+
+        .position-direction {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(0, 212, 170, 0.1);
+            color: #00d4aa;
+        }
+
+        .position-direction.short {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+        }
+
+        .position-price-row {
+            display: flex;
+            justify-content: space-between;
+            color: #8892a4;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .position-price-label {
+            color: #8892a4;
+        }
+
+        .position-price-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .position-pnl {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid #1e2a3a;
+            border-bottom: 1px solid #1e2a3a;
+            margin-bottom: 10px;
+        }
+
+        .position-pnl-label {
+            color: #8892a4;
+            font-size: 12px;
+        }
+
+        .position-pnl-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #00d4aa;
+        }
+
+        .position-pnl-value.loss {
+            color: #ff4d4d;
+        }
+
+        .position-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .position-actions .btn {
+            flex: 1;
+            padding: 6px;
+            font-size: 11px;
+        }
+
+        .follow-stats-summary {
+            background: #131a2b;
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 12px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #8892a4;
+            font-size: 11px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay.active {
+            display: flex;
+        }
+
+        .overlay-content {
+            width: 390px;
+            height: 844px;
+            background: #0a0e17;
+            border-radius: 40px;
+            border: 12px solid #1a1a1a;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .overlay-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid #1e2a3a;
+            background: #131a2b;
+        }
+
+        .overlay-back {
+            background: none;
+            border: none;
+            color: #00d4aa;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay-title {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .overlay-body {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: none;
+            padding: 16px;
+        }
+
+        .overlay-body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="notch"></div>
+
+        <div class="app-container">
+            <div class="tab-content">
+                <!-- Tab 1: 探索 -->
+                <div class="tab-pane active" id="tab-explore">
+                    <!-- Asset Card -->
+                    <div class="asset-card">
+                        <div class="asset-row">
+                            <div>
+                                <div class="asset-label">总资产</div>
+                                <div class="asset-value">$12,580.32</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="asset-label">今日盈亏</div>
+                                <div class="asset-value color-green">+$235.60 (+1.91%)</div>
+                            </div>
+                        </div>
+                        <svg class="asset-chart" viewBox="0 0 300 40">
+                            <defs>
+                                <linearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00d4aa;stop-opacity:0.3" />
+                                    <stop offset="100%" style="stop-color:#00d4aa;stop-opacity:0.01" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 0 30 Q 30 20 60 25 T 120 15 T 180 10 T 240 8 T 300 5" stroke="#00d4aa" stroke-width="2" fill="none"/>
+                            <path d="M 0 30 Q 30 20 60 25 T 120 15 T 180 10 T 240 8 T 300 5 L 300 40 L 0 40 Z" fill="url(#gradient1)"/>
+                        </svg>
+                    </div>
+
+                    <!-- AI 每日热点 -->
+                    <div class="daily-hot-title">🤖 AI 每日热点</div>
+
+                    <div class="hotspot-card">
+                        <div class="hotspot-header">
+                            <div class="hotspot-icon">📈</div>
+                            <div class="hotspot-title">BTC突破68000，链上巨鲸持续增持</div>
+                        </div>
+                        <div class="hotspot-summary">BTC突破关键阻力位68000，交易所净流出加速，大户地址7日内增持1.2%，可能预示上升趋势延续。</div>
+                        <div class="hotspot-footer">
+                            <span class="hotspot-verdict verdict-bullish">看涨</span>
+                            <span class="hotspot-action">→</span>
+                        </div>
+                    </div>
+
+                    <div class="hotspot-card">
+                        <div class="hotspot-header">
+                            <div class="hotspot-icon">⚠️</div>
+                            <div class="hotspot-title">ETH资金费率飙升至0.15%，短期多头拥挤</div>
+                        </div>
+                        <div class="hotspot-summary">以太坊资金费率达年内高点，大量杠杆多头集中建仓，极端行情风险上升，建议谨慎参与。</div>
+                        <div class="hotspot-footer">
+                            <span class="hotspot-verdict verdict-neutral">观望</span>
+                            <span class="hotspot-action">→</span>
+                        </div>
+                    </div>
+
+                    <div class="hotspot-card">
+                        <div class="hotspot-header">
+                            <div class="hotspot-icon">🚀</div>
+                            <div class="hotspot-title">SOL生态DEX日交易量突破$3B</div>
+                        </div>
+                        <div class="hotspot-summary">SOL链上DEX流动性创历史新高，生态热度持续上升，SOL价格突破历史高点，有望继续上扬。</div>
+                        <div class="hotspot-footer">
+                            <span class="hotspot-verdict verdict-bullish">看涨</span>
+                            <span class="hotspot-action">→</span>
+                        </div>
+                    </div>
+
+                    <!-- 热门币种 -->
+                    <div style="margin-top: 20px;">
+                        <div class="daily-hot-title">💹 热门币种</div>
+                        <div class="subtab-row">
+                            <div class="subtab active">涨幅榜</div>
+                            <div class="subtab">跌幅榜</div>
+                            <div class="subtab">成交量</div>
+                        </div>
+                    </div>
+
+                    <div class="coin-item">
+                        <div class="coin-icon" style="background: linear-gradient(135deg, #f7931a, #f0ad4e);">₿</div>
+                        <div class="coin-info">
+                            <div class="coin-name">Bitcoin</div>
+                            <div class="coin-code">BTC</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="coin-price">$67,823.50</div>
+                            <div class="coin-change change-up">+3.2% ▲</div>
+                        </div>
+                    </div>
+
+                    <div class="coin-item">
+                        <div class="coin-icon" style="background: linear-gradient(135deg, #627eea, #764ce0);">E</div>
+                        <div class="coin-info">
+                            <div class="coin-name">Ethereum</div>
+                            <div class="coin-code">ETH</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="coin-price">$3,450.20</div>
+                            <div class="coin-change change-up">+2.8% ▲</div>
+                        </div>
+                    </div>
+
+                    <div class="coin-item">
+                        <div class="coin-icon" style="background: linear-gradient(135deg, #14f195, #00c9a7);">S</div>
+                        <div class="coin-info">
+                            <div class="coin-name">Solana</div>
+                            <div class="coin-code">SOL</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="coin-price">$182.35</div>
+                            <div class="coin-change change-up">+5.1% ▲</div>
+                        </div>
+                    </div>
+
+                    <div class="coin-item">
+                        <div class="coin-icon" style="background: linear-gradient(135deg, #2ebf91, #1ba058);">A</div>
+                        <div class="coin-info">
+                            <div class="coin-name">Avalanche</div>
+                            <div class="coin-code">AVAX</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="coin-price">$42.80</div>
+                            <div class="coin-change change-down">-1.3% ▼</div>
+                        </div>
+                    </div>
+
+                    <div class="coin-item">
+                        <div class="coin-icon" style="background: linear-gradient(135deg, #ff6b6b, #ee5a6f);">P</div>
+                        <div class="coin-info">
+                            <div class="coin-name">Polygon</div>
+                            <div class="coin-code">MATIC</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="coin-price">$0.85</div>
+                            <div class="coin-change change-up">+1.5% ▲</div>
+                        </div>
+                    </div>
+
+                    <div class="coin-item">
+                        <div class="coin-icon" style="background: linear-gradient(135deg, #0066ff, #0052cc);">L</div>
+                        <div class="coin-info">
+                            <div class="coin-name">Litecoin</div>
+                            <div class="coin-code">LTC</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="coin-price">$156.42</div>
+                            <div class="coin-change change-up">+2.1% ▲</div>
+                        </div>
+                    </div>
+
+                    <div class="coin-item">
+                        <div class="coin-icon" style="background: linear-gradient(135deg, #f7931a, #f5af19);">X</div>
+                        <div class="coin-info">
+                            <div class="coin-name">XRP</div>
+                            <div class="coin-code">XRP</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="coin-price">$2.45</div>
+                            <div class="coin-change change-down">-0.8% ▼</div>
+                        </div>
+                    </div>
+
+                    <!-- AI策略精选 -->
+                    <div style="margin-top: 20px; margin-bottom: 20px;">
+                        <div class="daily-hot-title">🤖 AI策略精选</div>
+                        <div class="horizontal-scroll">
+                            <div class="strategy-card">
+                                <div class="strategy-header">
+                                    <div class="strategy-name">稳健Alpha</div>
+                                    <span class="strategy-risk risk-low">低风险</span>
+                                </div>
+                                <div class="strategy-stats">
+                                    <div>月收益: <span class="strategy-stats-value">+12.3%</span></div>
+                                    <div>跟单人数: 152</div>
+                                </div>
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+
+                            <div class="strategy-card">
+                                <div class="strategy-header">
+                                    <div class="strategy-name">趋势猎手</div>
+                                    <span class="strategy-risk risk-medium">中风险</span>
+                                </div>
+                                <div class="strategy-stats">
+                                    <div>月收益: <span class="strategy-stats-value">+28.6%</span></div>
+                                    <div>跟单人数: 89</div>
+                                </div>
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+
+                            <div class="strategy-card">
+                                <div class="strategy-header">
+                                    <div class="strategy-name">网格机器人</div>
+                                    <span class="strategy-risk risk-low">低风险</span>
+                                </div>
+                                <div class="strategy-stats">
+                                    <div>月收益: <span class="strategy-stats-value">+8.1%</span></div>
+                                    <div>跟单人数: 210</div>
+                                </div>
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: 跟单广场 -->
+                <div class="tab-pane" id="tab-follow">
+                    <div class="section-header">
+                        <div class="section-title">跟单广场</div>
+                        <a class="section-link" onclick="showOverlay('profit-sharing')">分润规则 ℹ️</a>
+                    </div>
+
+                    <div class="subtab-row">
+                        <div class="subtab active" onclick="switchFollowTab(this, 'real-traders')">真人交易员</div>
+                        <div class="subtab" onclick="switchFollowTab(this, 'ai-strategies')">AI策略</div>
+                        <div class="subtab" onclick="switchFollowTab(this, 'my-follow')">我的跟单</div>
+                    </div>
+
+                    <!-- Real Traders -->
+                    <div id="real-traders" class="follow-content">
+                        <div class="time-filter">
+                            <div class="filter-pill active">7天</div>
+                            <div class="filter-pill">30天</div>
+                            <div class="filter-pill">90天</div>
+                        </div>
+
+                        <div class="sort-row">
+                            <div class="filter-pill active">收益率</div>
+                            <div class="filter-pill">胜率</div>
+                            <div class="filter-pill">稳健度</div>
+                            <div class="filter-pill">热度</div>
+                        </div>
+
+                        <div class="trader-card">
+                            <div class="trader-header">
+                                <div class="avatar">👤</div>
+                                <div class="trader-info">
+                                    <div class="trader-name">
+                                        CryptoKing
+                                        <span class="level-badge">🥇</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="trader-tags">
+                                <span class="tag">#合约猎手</span>
+                                <span class="tag">#BTC信仰者</span>
+                                <span class="tag">#稳健策略</span>
+                            </div>
+                            <div class="trader-stats">
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">+48.3%</div>
+                                    <div>30天收益</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">67%</div>
+                                    <div>胜率</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">1,230</div>
+                                    <div>跟单人数</div>
+                                </div>
+                            </div>
+                            <div class="trader-buttons">
+                                <button class="btn btn-outline btn-sm">关注</button>
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+
+                        <div class="trader-card">
+                            <div class="trader-header">
+                                <div class="avatar">🐳</div>
+                                <div class="trader-info">
+                                    <div class="trader-name">
+                                        Whale_Hunter
+                                        <span class="level-badge">🥈</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="trader-tags">
+                                <span class="tag">#现货策略</span>
+                                <span class="tag">#ETH专家</span>
+                            </div>
+                            <div class="trader-stats">
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">+32.1%</div>
+                                    <div>30天收益</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">72%</div>
+                                    <div>胜率</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">856</div>
+                                    <div>跟单人数</div>
+                                </div>
+                            </div>
+                            <div class="trader-buttons">
+                                <button class="btn btn-outline btn-sm">关注</button>
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+
+                        <div class="trader-card">
+                            <div class="trader-header">
+                                <div class="avatar">🎯</div>
+                                <div class="trader-info">
+                                    <div class="trader-name">
+                                        TrendMaster
+                                        <span class="level-badge">🥇</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="trader-tags">
+                                <span class="tag">#技术面高手</span>
+                                <span class="tag">#日内交易</span>
+                            </div>
+                            <div class="trader-stats">
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">+56.7%</div>
+                                    <div>30天收益</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">61%</div>
+                                    <div>胜率</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">542</div>
+                                    <div>跟单人数</div>
+                                </div>
+                            </div>
+                            <div class="trader-buttons">
+                                <button class="btn btn-outline btn-sm">关注</button>
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+
+                        <div class="trader-card">
+                            <div class="trader-header">
+                                <div class="avatar">💎</div>
+                                <div class="trader-info">
+                                    <div class="trader-name">
+                                        EliteTrader
+                                        <span class="level-badge">💎</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="trader-tags">
+                                <span class="tag">#风险控制</span>
+                                <span class="tag">#稳定收益</span>
+                            </div>
+                            <div class="trader-stats">
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">+24.2%</div>
+                                    <div>30天收益</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">79%</div>
+                                    <div>胜率</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">2,108</div>
+                                    <div>跟单人数</div>
+                                </div>
+                            </div>
+                            <div class="trader-buttons">
+                                <button class="btn btn-outline btn-sm">关注</button>
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Strategies -->
+                    <div id="ai-strategies" class="follow-content" style="display: none;">
+                        <div class="trader-card">
+                            <div class="trader-header">
+                                <div class="avatar">🤖</div>
+                                <div class="trader-info">
+                                    <div class="trader-name">稳健Alpha</div>
+                                </div>
+                            </div>
+                            <div style="color: #8892a4; font-size: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #1e2a3a;">低风险智能策略，采用网格+趋势结合</div>
+                            <div class="trader-stats" style="border: none; margin-bottom: 10px;">
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">+12.3%</div>
+                                    <div>年化收益</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">8.2%</div>
+                                    <div>最大回撤</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">1.82</div>
+                                    <div>夏普比率</div>
+                                </div>
+                            </div>
+                            <div style="color: #8892a4; font-size: 11px; margin-bottom: 10px;">运行365天 · 1,230人跟单</div>
+                            <div class="trader-buttons">
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+
+                        <div class="trader-card">
+                            <div class="trader-header">
+                                <div class="avatar">🤖</div>
+                                <div class="trader-info">
+                                    <div class="trader-name">趋势猎手</div>
+                                </div>
+                            </div>
+                            <div style="color: #8892a4; font-size: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #1e2a3a;">中风险策略，AI识别大级别趋势</div>
+                            <div class="trader-stats" style="border: none; margin-bottom: 10px;">
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">+28.6%</div>
+                                    <div>年化收益</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">15.3%</div>
+                                    <div>最大回撤</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">2.14</div>
+                                    <div>夏普比率</div>
+                                </div>
+                            </div>
+                            <div style="color: #8892a4; font-size: 11px; margin-bottom: 10px;">运行245天 · 856人跟单</div>
+                            <div class="trader-buttons">
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+
+                        <div class="trader-card">
+                            <div class="trader-header">
+                                <div class="avatar">🤖</div>
+                                <div class="trader-info">
+                                    <div class="trader-name">网格机器人 <span class="badge badge-blue">PRO</span></div>
+                                </div>
+                            </div>
+                            <div style="color: #8892a4; font-size: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #1e2a3a;">自适应网格，自动调整参数</div>
+                            <div class="trader-stats" style="border: none; margin-bottom: 10px;">
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">+8.1%</div>
+                                    <div>年化收益</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">4.1%</div>
+                                    <div>最大回撤</div>
+                                </div>
+                                <div class="trader-stat-item">
+                                    <div class="trader-stat-value">2.31</div>
+                                    <div>夏普比率</div>
+                                </div>
+                            </div>
+                            <div style="color: #8892a4; font-size: 11px; margin-bottom: 10px;">运行180天 · 2,108人跟单</div>
+                            <div class="trader-buttons">
+                                <button class="btn btn-green btn-sm">跟单</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- My Follow -->
+                    <div id="my-follow" class="follow-content" style="display: none;">
+                        <div class="my-follow-banner">
+                            <div class="banner-row">
+                                <span class="banner-label">总投入</span>
+                                <span class="banner-value">$2,500</span>
+                            </div>
+                            <div class="banner-row">
+                                <span class="banner-label">总盈亏</span>
+                                <span class="profit-value">+$380.50 (+15.2%)</span>
+                            </div>
+                            <div class="banner-row">
+                                <span class="banner-label">活跃策略</span>
+                                <span class="banner-value">3</span>
+                            </div>
+                        </div>
+
+                        <div class="position-card">
+                            <div class="position-header">
+                                <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;">👤</div>
+                                <div>
+                                    <div class="position-trader">CryptoKing</div>
+                                    <div class="position-coin">BTC/USDT 做多</div>
+                                </div>
+                            </div>
+                            <div class="position-price-row">
+                                <span>开仓 66,200 → 67,823</span>
+                            </div>
+                            <div class="position-pnl">
+                                <span class="position-pnl-label">浮盈</span>
+                                <span class="position-pnl-value">+$162.30 (+2.45%)</span>
+                            </div>
+                            <div class="position-actions">
+                                <button class="btn btn-outline btn-sm">平仓</button>
+                                <button class="btn btn-outline btn-sm">止损</button>
+                            </div>
+                        </div>
+
+                        <div class="position-card">
+                            <div class="position-header">
+                                <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;">🐳</div>
+                                <div>
+                                    <div class="position-trader">Whale_Hunter</div>
+                                    <div class="position-coin">ETH/USDT 做多</div>
+                                </div>
+                            </div>
+                            <div class="position-price-row">
+                                <span>开仓 3,380 → 3,450</span>
+                            </div>
+                            <div class="position-pnl">
+                                <span class="position-pnl-label">浮盈</span>
+                                <span class="position-pnl-value">+$83.50 (+2.07%)</span>
+                            </div>
+                            <div class="position-actions">
+                                <button class="btn btn-outline btn-sm">平仓</button>
+                                <button class="btn btn-outline btn-sm">止损</button>
+                            </div>
+                        </div>
+
+                        <div class="follow-section-header">── AI策略跟单 ──</div>
+
+                        <div class="position-card">
+                            <div class="position-header">
+                                <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;">🤖</div>
+                                <div>
+                                    <div class="position-trader">稳健Alpha</div>
+                                    <div class="position-coin">BTC/USDT 做多</div>
+                                </div>
+                            </div>
+                            <div class="position-price-row">
+                                <span>开仓 67,100 → 67,823</span>
+                            </div>
+                            <div class="position-pnl">
+                                <span class="position-pnl-label">浮盈</span>
+                                <span class="position-pnl-value">+$72.30 (+1.08%)</span>
+                            </div>
+                            <div class="position-actions">
+                                <button class="btn btn-outline btn-sm">平仓</button>
+                                <button class="btn btn-outline btn-sm">止损</button>
+                                <button class="btn btn-outline btn-sm">暂停</button>
+                            </div>
+                        </div>
+
+                        <div class="position-card">
+                            <div class="position-header">
+                                <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;">🤖</div>
+                                <div>
+                                    <div class="position-trader">趋势猎手</div>
+                                    <div class="position-coin">SOL/USDT 做空</div>
+                                </div>
+                            </div>
+                            <div class="position-price-row">
+                                <span>开仓 182.0 → 178.5</span>
+                            </div>
+                            <div class="position-pnl">
+                                <span class="position-pnl-label">浮盈</span>
+                                <span class="position-pnl-value">+$64.30 (+1.92%)</span>
+                            </div>
+                            <div class="position-actions">
+                                <button class="btn btn-outline btn-sm">平仓</button>
+                                <button class="btn btn-outline btn-sm">止损</button>
+                                <button class="btn btn-outline btn-sm">暂停</button>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px;">
+                            <button class="btn btn-green" style="width: 100%;">管理跟单设置</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: 交易 -->
+                <div class="tab-pane" id="tab-trading">
+                    <div class="subtab-row">
+                        <div class="subtab active" onclick="switchTradeTab(this, 'spot')">现货</div>
+                        <div class="subtab" onclick="switchTradeTab(this, 'futures')">合约</div>
+                        <div class="subtab" onclick="switchTradeTab(this, 'follow-copy')">跟单</div>
+                    </div>
+
+                    <!-- Spot Trading -->
+                    <div id="spot" class="trade-content">
+                        <div class="price-header">
+                            <div class="price-left">
+                                <select class="coin-selector">
+                                    <option>BTC/USDT ▼</option>
+                                </select>
+                            </div>
+                            <div class="price-right">
+                                <div class="current-price">$67,823.50</div>
+                                <div class="color-green" style="font-size: 12px;">+3.2% ▲</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-brief">
+                            🤖 4H上升趋势，RSI 62，支撑66200，阻力68500
+                        </div>
+
+                        <div class="chart-placeholder">
+                            <svg viewBox="0 0 350 180" style="width: 100%; height: 100%;">
+                                <defs>
+                                    <linearGradient id="chart-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d4aa;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#00d4aa;stop-opacity:0.01" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 10 120 L 35 110 L 60 95 L 85 85 L 110 75 L 135 70 L 160 60 L 185 50 L 210 45 L 235 40 L 260 35 L 285 30 L 310 28 L 335 25" stroke="#00d4aa" stroke-width="2" fill="none"/>
+                                <path d="M 10 120 L 35 110 L 60 95 L 85 85 L 110 75 L 135 70 L 160 60 L 185 50 L 210 45 L 235 40 L 260 35 L 285 30 L 310 28 L 335 25 L 335 180 L 10 180 Z" fill="url(#chart-gradient)"/>
+                            </svg>
+                        </div>
+
+                        <div class="time-period">
+                            <button class="time-btn">1m</button>
+                            <button class="time-btn">5m</button>
+                            <button class="time-btn">15m</button>
+                            <button class="time-btn">1H</button>
+                            <button class="time-btn active">4H</button>
+                            <button class="time-btn">1D</button>
+                        </div>
+
+                        <div class="ai-input">
+                            <span>🤖</span>
+                            <input class="ai-input-field" type="text" placeholder="输入AI交易指令... 例：1000U买BTC">
+                        </div>
+
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" onclick="toggleBuySell(this, 'buy')">买入</button>
+                            <button class="toggle-btn" onclick="toggleBuySell(this, 'sell')">卖出</button>
+                        </div>
+
+                        <div class="order-type">
+                            <button class="order-type-btn active">限价</button>
+                            <button class="order-type-btn">市价</button>
+                            <button class="order-type-btn">条件单</button>
+                        </div>
+
+                        <div class="input-row">
+                            <label class="input-label">价格</label>
+                            <input class="input-box" type="number" value="67823.50" placeholder="输入价格">
+                        </div>
+
+                        <div class="input-row">
+                            <label class="input-label">数量</label>
+                            <input class="input-box" type="number" placeholder="输入数量">
+                            <div class="amount-preset">
+                                <button class="amount-btn">25%</button>
+                                <button class="amount-btn">50%</button>
+                                <button class="amount-btn">75%</button>
+                                <button class="amount-btn">100%</button>
+                            </div>
+                        </div>
+
+                        <div class="available-row">
+                            可用: <span class="available-value">5,230.00 USDT</span>
+                        </div>
+
+                        <div class="ai-suggestion-card">
+                            <div class="ai-suggestion-header">🤖 AI建议</div>
+                            <div class="suggestion-row">
+                                <span class="suggestion-label">止损:</span>
+                                <span><span class="suggestion-value">$65,500</span> <span class="suggestion-pct">(-3.4%)</span></span>
+                            </div>
+                            <div class="suggestion-row">
+                                <span class="suggestion-label">止盈:</span>
+                                <span><span class="suggestion-value">$71,200</span> <span class="suggestion-pct gain">(+5.0%)</span></span>
+                            </div>
+                            <button class="adopt-btn">采纳建议</button>
+                        </div>
+
+                        <button class="buy-btn-large">买入 BTC</button>
+
+                        <div class="action-row">
+                            <button class="btn btn-outline">🤖 AI深度分析</button>
+                            <button class="btn btn-outline">💡 智能建仓</button>
+                        </div>
+                    </div>
+
+                    <!-- Futures Trading -->
+                    <div id="futures" class="trade-content" style="display: none;">
+                        <div class="price-header">
+                            <div class="price-left">
+                                <select class="coin-selector">
+                                    <option>BTC/USDT ▼</option>
+                                </select>
+                            </div>
+                            <div class="price-right">
+                                <div class="current-price">$67,823.50</div>
+                                <div class="color-green" style="font-size: 12px;">+3.2% ▲</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-brief">
+                            🤖 4H上升趋势，RSI 62，支撑66200，阻力68500
+                        </div>
+
+                        <div class="chart-placeholder">
+                            <svg viewBox="0 0 350 180" style="width: 100%; height: 100%;">
+                                <defs>
+                                    <linearGradient id="chart-gradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d4aa;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#00d4aa;stop-opacity:0.01" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 10 120 L 35 110 L 60 95 L 85 85 L 110 75 L 135 70 L 160 60 L 185 50 L 210 45 L 235 40 L 260 35 L 285 30 L 310 28 L 335 25" stroke="#00d4aa" stroke-width="2" fill="none"/>
+                                <path d="M 10 120 L 35 110 L 60 95 L 85 85 L 110 75 L 135 70 L 160 60 L 185 50 L 210 45 L 235 40 L 260 35 L 285 30 L 310 28 L 335 25 L 335 180 L 10 180 Z" fill="url(#chart-gradient2)"/>
+                            </svg>
+                        </div>
+
+                        <div class="time-period">
+                            <button class="time-btn">1m</button>
+                            <button class="time-btn">5m</button>
+                            <button class="time-btn">15m</button>
+                            <button class="time-btn">1H</button>
+                            <button class="time-btn active">4H</button>
+                            <button class="time-btn">1D</button>
+                        </div>
+
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" onclick="toggleLongShort(this, 'long')">开多</button>
+                            <button class="toggle-btn" onclick="toggleLongShort(this, 'short')">开空</button>
+                        </div>
+
+                        <div class="toggle-group">
+                            <button class="toggle-btn active">逐仓</button>
+                            <button class="toggle-btn">全仓</button>
+                        </div>
+
+                        <div class="leverage-section">
+                            <div class="leverage-header">杠杆倍数</div>
+                            <div class="leverage-display" id="leverage-display">5x</div>
+                            <input type="range" min="1" max="125" value="5" class="leverage-slider" id="leverage-slider" onchange="updateLeverageRisk()">
+                            <div class="risk-indicator risk-low" id="risk-indicator">🟢 低风险 (1-3x)</div>
+                            <div class="liquidation-text">强平价格: $61,840.30</div>
+                        </div>
+
+                        <div class="order-type">
+                            <button class="order-type-btn active">限价</button>
+                            <button class="order-type-btn">市价</button>
+                        </div>
+
+                        <div class="input-row">
+                            <label class="input-label">价格</label>
+                            <input class="input-box" type="number" value="67823.50" placeholder="输入价格">
+                        </div>
+
+                        <div class="input-row">
+                            <label class="input-label">数量</label>
+                            <input class="input-box" type="number" placeholder="输入数量">
+                            <div class="amount-preset">
+                                <button class="amount-btn">25%</button>
+                                <button class="amount-btn">50%</button>
+                                <button class="amount-btn">75%</button>
+                                <button class="amount-btn">100%</button>
+                            </div>
+                        </div>
+
+                        <div class="available-row">
+                            可用: <span class="available-value">5,230.00 USDT</span>
+                        </div>
+
+                        <div class="ai-suggestion-card">
+                            <div class="ai-suggestion-header">🤖 AI建议</div>
+                            <div class="suggestion-row">
+                                <span class="suggestion-label">推荐杠杆:</span>
+                                <span class="suggestion-value">3-5x</span>
+                            </div>
+                            <div class="suggestion-row">
+                                <span class="suggestion-label">止损:</span>
+                                <span><span class="suggestion-value">$65,500</span> <span class="suggestion-pct">(-3.4%)</span></span>
+                            </div>
+                            <div class="suggestion-row">
+                                <span class="suggestion-label">止盈:</span>
+                                <span><span class="suggestion-value">$71,200</span> <span class="suggestion-pct gain">(+5.0%)</span></span>
+                            </div>
+                            <button class="adopt-btn">采纳建议</button>
+                        </div>
+
+                        <button class="buy-btn-large">开多 BTC</button>
+                    </div>
+
+                    <!-- Follow Copy -->
+                    <div id="follow-copy" class="trade-content" style="display: none;">
+                        <!-- Summary Banner -->
+                        <div style="background: linear-gradient(135deg, rgba(0,212,170,0.1), rgba(46,134,193,0.1)); border: 1px solid #1e2a3a; border-radius: 10px; padding: 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="color: #8892a4; font-size: 11px; margin-bottom: 2px;">总浮盈</div>
+                                <div style="color: #00d4aa; font-size: 20px; font-weight: 700;">+$382.40</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="color: #8892a4; font-size: 11px; margin-bottom: 2px;">总投入</div>
+                                <div style="color: #e2e8f0; font-size: 15px; font-weight: 600;">$2,500</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: #8892a4; font-size: 11px; margin-bottom: 2px;">收益率</div>
+                                <div style="color: #00d4aa; font-size: 15px; font-weight: 600;">+15.3%</div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-tabs: 真人跟单 / AI策略跟单 -->
+                        <div style="display: flex; gap: 0; margin-bottom: 14px; background: #0d1320; border-radius: 10px; padding: 3px; border: 1px solid #1e2a3a;">
+                            <div id="follow-tab-human" onclick="switchCopyTab('human')" style="flex: 1; text-align: center; padding: 9px 0; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #1e2a3a; color: #e2e8f0;">👤 真人跟单 <span style="background: #2e86c1; color: white; font-size: 10px; padding: 1px 6px; border-radius: 8px; margin-left: 4px;">2</span></div>
+                            <div id="follow-tab-ai" onclick="switchCopyTab('ai')" style="flex: 1; text-align: center; padding: 9px 0; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent; color: #8892a4;">🤖 AI策略 <span style="background: #374151; color: #8892a4; font-size: 10px; padding: 1px 6px; border-radius: 8px; margin-left: 4px;">2</span></div>
+                        </div>
+
+                        <!-- 真人跟单列表 -->
+                        <div id="follow-list-human">
+                            <div class="position-card">
+                                <div class="position-header">
+                                    <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;">👤</div>
+                                    <div style="flex:1;">
+                                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                                            <div class="position-trader">CryptoKing</div>
+                                            <span style="font-size:10px; color:#f0a030; background:rgba(240,160,48,0.15); padding:2px 6px; border-radius:4px;">🥇 黄金</span>
+                                        </div>
+                                        <div class="position-coin">BTC/USDT <span style="color:#00d4aa;">做多</span></div>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 4px; padding:8px 10px; background:rgba(255,255,255,0.02); border-radius:6px;">
+                                    <div style="font-size:12px; color:#8892a4;">开仓 <span style="color:#e2e8f0;">66,200</span></div>
+                                    <div style="color:#8892a4; font-size:12px;">→</div>
+                                    <div style="font-size:12px; color:#8892a4;">当前 <span style="color:#00d4aa; font-weight:600;">67,823</span></div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div>
+                                        <span style="font-size:11px; color:#8892a4;">浮盈</span>
+                                        <span style="font-size:15px; font-weight:700; color:#00d4aa; margin-left:6px;">+$162.30</span>
+                                        <span style="font-size:12px; color:#00d4aa;"> (+2.45%)</span>
+                                    </div>
+                                    <div style="font-size:11px; color:#8892a4;">保证金 $500</div>
+                                </div>
+                                <div class="position-actions">
+                                    <button class="btn btn-outline btn-sm">平仓</button>
+                                    <button class="btn btn-outline btn-sm">修改止损</button>
+                                    <button class="btn btn-outline btn-sm" style="color:#ff4d4d; border-color:rgba(255,77,77,0.3);">停止跟单</button>
+                                </div>
+                            </div>
+
+                            <div class="position-card">
+                                <div class="position-header">
+                                    <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;">🐳</div>
+                                    <div style="flex:1;">
+                                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                                            <div class="position-trader">Whale_Hunter</div>
+                                            <span style="font-size:10px; color:#c0c0c0; background:rgba(192,192,192,0.15); padding:2px 6px; border-radius:4px;">🥈 白银</span>
+                                        </div>
+                                        <div class="position-coin">ETH/USDT <span style="color:#00d4aa;">做多</span></div>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 4px; padding:8px 10px; background:rgba(255,255,255,0.02); border-radius:6px;">
+                                    <div style="font-size:12px; color:#8892a4;">开仓 <span style="color:#e2e8f0;">3,380</span></div>
+                                    <div style="color:#8892a4; font-size:12px;">→</div>
+                                    <div style="font-size:12px; color:#8892a4;">当前 <span style="color:#00d4aa; font-weight:600;">3,450</span></div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div>
+                                        <span style="font-size:11px; color:#8892a4;">浮盈</span>
+                                        <span style="font-size:15px; font-weight:700; color:#00d4aa; margin-left:6px;">+$83.50</span>
+                                        <span style="font-size:12px; color:#00d4aa;"> (+2.07%)</span>
+                                    </div>
+                                    <div style="font-size:11px; color:#8892a4;">保证金 $300</div>
+                                </div>
+                                <div class="position-actions">
+                                    <button class="btn btn-outline btn-sm">平仓</button>
+                                    <button class="btn btn-outline btn-sm">修改止损</button>
+                                    <button class="btn btn-outline btn-sm" style="color:#ff4d4d; border-color:rgba(255,77,77,0.3);">停止跟单</button>
+                                </div>
+                            </div>
+
+                            <!-- 真人跟单统计 -->
+                            <div style="background:#131a2b; border:1px solid #1e2a3a; border-radius:8px; padding:12px; margin-top:4px;">
+                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#8892a4; margin-bottom:6px;">
+                                    <span>真人跟单投入</span><span style="color:#e2e8f0;">$800</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#8892a4;">
+                                    <span>真人跟单盈亏</span><span style="color:#00d4aa; font-weight:600;">+$245.80 (+30.7%)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI策略跟单列表 -->
+                        <div id="follow-list-ai" style="display:none;">
+                            <div class="position-card">
+                                <div class="position-header">
+                                    <div class="avatar" style="width: 32px; height: 32px; font-size: 14px; background: rgba(0,212,170,0.15); border-color: rgba(0,212,170,0.3);">🤖</div>
+                                    <div style="flex:1;">
+                                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                                            <div class="position-trader">稳健Alpha</div>
+                                            <span style="font-size:10px; color:#00d4aa; background:rgba(0,212,170,0.12); padding:2px 6px; border-radius:4px;">低风险 · 运行128天</span>
+                                        </div>
+                                        <div class="position-coin">BTC/USDT <span style="color:#00d4aa;">做多</span></div>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 4px; padding:8px 10px; background:rgba(255,255,255,0.02); border-radius:6px;">
+                                    <div style="font-size:12px; color:#8892a4;">开仓 <span style="color:#e2e8f0;">67,100</span></div>
+                                    <div style="color:#8892a4; font-size:12px;">→</div>
+                                    <div style="font-size:12px; color:#8892a4;">当前 <span style="color:#00d4aa; font-weight:600;">67,823</span></div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div>
+                                        <span style="font-size:11px; color:#8892a4;">浮盈</span>
+                                        <span style="font-size:15px; font-weight:700; color:#00d4aa; margin-left:6px;">+$72.30</span>
+                                        <span style="font-size:12px; color:#00d4aa;"> (+1.08%)</span>
+                                    </div>
+                                    <div style="font-size:11px; color:#8892a4;">保证金 $1,000</div>
+                                </div>
+                                <div class="position-actions">
+                                    <button class="btn btn-outline btn-sm">平仓</button>
+                                    <button class="btn btn-outline btn-sm">修改止损</button>
+                                    <button class="btn btn-outline btn-sm" style="color:#f0a030; border-color:rgba(240,160,48,0.3);">暂停策略</button>
+                                </div>
+                            </div>
+
+                            <div class="position-card">
+                                <div class="position-header">
+                                    <div class="avatar" style="width: 32px; height: 32px; font-size: 14px; background: rgba(46,134,193,0.15); border-color: rgba(46,134,193,0.3);">🤖</div>
+                                    <div style="flex:1;">
+                                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                                            <div class="position-trader">趋势猎手</div>
+                                            <span style="font-size:10px; color:#2e86c1; background:rgba(46,134,193,0.12); padding:2px 6px; border-radius:4px;">中风险 · 运行86天</span>
+                                        </div>
+                                        <div class="position-coin">SOL/USDT <span style="color:#ff4d4d;">做空</span></div>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 4px; padding:8px 10px; background:rgba(255,255,255,0.02); border-radius:6px;">
+                                    <div style="font-size:12px; color:#8892a4;">开仓 <span style="color:#e2e8f0;">182.0</span></div>
+                                    <div style="color:#8892a4; font-size:12px;">→</div>
+                                    <div style="font-size:12px; color:#8892a4;">当前 <span style="color:#00d4aa; font-weight:600;">178.5</span></div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div>
+                                        <span style="font-size:11px; color:#8892a4;">浮盈</span>
+                                        <span style="font-size:15px; font-weight:700; color:#00d4aa; margin-left:6px;">+$64.30</span>
+                                        <span style="font-size:12px; color:#00d4aa;"> (+1.92%)</span>
+                                    </div>
+                                    <div style="font-size:11px; color:#8892a4;">保证金 $400</div>
+                                </div>
+                                <div class="position-actions">
+                                    <button class="btn btn-outline btn-sm">平仓</button>
+                                    <button class="btn btn-outline btn-sm">修改止损</button>
+                                    <button class="btn btn-outline btn-sm" style="color:#f0a030; border-color:rgba(240,160,48,0.3);">暂停策略</button>
+                                </div>
+                            </div>
+
+                            <!-- AI策略跟单统计 -->
+                            <div style="background:#131a2b; border:1px solid #1e2a3a; border-radius:8px; padding:12px; margin-top:4px;">
+                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#8892a4; margin-bottom:6px;">
+                                    <span>AI策略投入</span><span style="color:#e2e8f0;">$1,400</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#8892a4; margin-bottom:6px;">
+                                    <span>AI策略盈亏</span><span style="color:#00d4aa; font-weight:600;">+$136.60 (+9.8%)</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#8892a4;">
+                                    <span>当前订阅</span><span style="color:#2e86c1;">免费版 · <span onclick="showOverlay('subscription')" style="text-decoration:underline; cursor:pointer;">升级解锁更多策略</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 底部管理按钮 -->
+                        <div style="margin-top:14px;">
+                            <button class="btn btn-green" style="width: 100%;">管理跟单设置</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: AI助手 -->
+                <div class="tab-pane" id="tab-ai">
+                    <div style="margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
+                            <div style="font-size: 20px;">🤖</div>
+                            <div style="color: #e2e8f0; font-size: 16px; font-weight: 600;">AI 助手</div>
+                        </div>
+                        <div style="color: #8892a4; font-size: 12px; line-height: 1.6; margin-bottom: 16px;">
+                            你好！我是 Toobit AI 助手，可以帮你分析行情、诊断持仓、辅助下单。
+                        </div>
+
+                        <!-- Suggestion Cards -->
+                        <div class="card" style="padding: 14px; cursor: pointer; transition: all 0.2s;" onclick="showAIChat('market')">
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <div style="font-size: 20px;">📊</div>
+                                <div>
+                                    <div style="color: #e2e8f0; font-size: 13px; font-weight: 600; margin-bottom: 4px;">行情分析</div>
+                                    <div style="color: #8892a4; font-size: 12px; line-height: 1.4;">实时分析任意币种的技术面、链上数据和市场情绪</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="padding: 14px; cursor: pointer; transition: all 0.2s;" onclick="showAIChat('diagnosis')">
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <div style="font-size: 20px;">🏥</div>
+                                <div>
+                                    <div style="color: #e2e8f0; font-size: 13px; font-weight: 600; margin-bottom: 4px;">持仓诊断</div>
+                                    <div style="color: #8892a4; font-size: 12px; line-height: 1.4;">一键体检你的仓位健康度，发现潜在风险</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="padding: 14px; cursor: pointer; transition: all 0.2s;" onclick="showAIChat('order')">
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <div style="font-size: 20px;">📝</div>
+                                <div>
+                                    <div style="color: #e2e8f0; font-size: 13px; font-weight: 600; margin-bottom: 4px;">智能下单</div>
+                                    <div style="color: #8892a4; font-size: 12px; line-height: 1.4;">用自然语言描述交易意图，AI帮你填单执行</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="padding: 14px; cursor: pointer; transition: all 0.2s;" onclick="showAIChat('learning')">
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <div style="font-size: 20px;">🎓</div>
+                                <div>
+                                    <div style="color: #e2e8f0; font-size: 13px; font-weight: 600; margin-bottom: 4px;">交易学习</div>
+                                    <div style="color: #8892a4; font-size: 12px; line-height: 1.4;">从入门到进阶，AI当你的私人交易教练</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upgrade Banner -->
+                        <div style="background: rgba(0, 212, 170, 0.08); border: 1px solid rgba(0, 212, 170, 0.2); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                            <div style="color: #00d4aa; font-size: 12px; font-weight: 600;">升级PRO，解锁无限AI对话和深度分析</div>
+                            <span style="color: #00d4aa; font-size: 14px; cursor: pointer;" onclick="showOverlay('subscription')">→</span>
+                        </div>
+
+                        <!-- Quick Action Chips -->
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <button class="filter-pill" style="padding: 6px 10px; font-size: 11px;">行情</button>
+                            <button class="filter-pill" style="padding: 6px 10px; font-size: 11px;">持仓</button>
+                            <button class="filter-pill" style="padding: 6px 10px; font-size: 11px;">下单</button>
+                            <button class="filter-pill" style="padding: 6px 10px; font-size: 11px;">策略</button>
+                            <button class="filter-pill" style="padding: 6px 10px; font-size: 11px;">学习</button>
+                        </div>
+                    </div>
+
+                    <!-- Chat View (Hidden initially) -->
+                    <div id="ai-chat-view" style="display: none;">
+                        <button style="background: none; border: none; color: #00d4aa; font-size: 16px; cursor: pointer; margin-bottom: 16px;" onclick="backToAIHome()">← 返回</button>
+
+                        <div style="margin-bottom: 16px;">
+                            <div style="background: #131a2b; border: 1px solid #1e2a3a; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+                                <div style="color: #8892a4; font-size: 11px; margin-bottom: 4px;">你</div>
+                                <div style="color: #e2e8f0; font-size: 13px;">帮我分析一下BTC现在的情况</div>
+                            </div>
+
+                            <div style="margin-bottom: 12px;">
+                                <div style="color: #00d4aa; font-size: 11px; margin-bottom: 4px; font-weight: 600;">🤖 AI助手</div>
+                                <div class="card" style="padding: 12px;">
+                                    <div style="color: #e2e8f0; font-size: 13px; font-weight: 600; margin-bottom: 10px;">BTC/USDT 实时分析</div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #1e2a3a;">
+                                        <div>
+                                            <div style="color: #e2e8f0; font-size: 14px; font-weight: 600;">$67,823.50</div>
+                                            <div style="color: #00d4aa; font-size: 12px;">+3.2% ▲</div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 10px;">
+                                        <div style="color: #8892a4; font-size: 11px; font-weight: 600; margin-bottom: 6px;">📊 技术面</div>
+                                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6;">
+                                            • 趋势: 4H级别上升趋势<br>
+                                            • RSI(14): 62 (中性偏多)<br>
+                                            • MACD: 金叉，动能增强<br>
+                                            • 支撑: 66,200 / 64,800<br>
+                                            • 阻力: 68,500 / 70,000
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 10px;">
+                                        <div style="color: #8892a4; font-size: 11px; font-weight: 600; margin-bottom: 6px;">🔗 链上数据</div>
+                                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6;">
+                                            • 交易所净流出 2,340 BTC<br>
+                                            • 巨鲸地址7天增持 +1.2%<br>
+                                            • 持仓>1年占比: 68.3%
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 10px;">
+                                        <div style="color: #8892a4; font-size: 11px; font-weight: 600; margin-bottom: 6px;">💭 市场情绪</div>
+                                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6;">
+                                            • 恐惧贪婪指数: 72 (贪婪)<br>
+                                            • 资金费率: +0.01% (正常)<br>
+                                            • 多空比: 1.3:1 (多头优)
+                                        </div>
+                                    </div>
+
+                                    <div style="background: rgba(0, 212, 170, 0.1); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+                                        <div style="color: #8892a4; font-size: 11px; margin-bottom: 6px;">🤖 AI综合评分</div>
+                                        <div style="color: #e2e8f0; font-size: 13px; font-weight: 600; margin-bottom: 6px;">76/100</div>
+                                        <div style="background: #1e2a3a; border-radius: 4px; height: 6px; margin-bottom: 8px; overflow: hidden;">
+                                            <div style="background: #00d4aa; height: 100%; width: 76%;"></div>
+                                        </div>
+                                        <div style="color: #8892a4; font-size: 11px; line-height: 1.4;">偏多。短期偏多，但注意68500阻力。建议轻仓做多，止损设在66000下方。</div>
+                                    </div>
+
+                                    <div style="display: flex; gap: 6px;">
+                                        <button class="btn btn-green btn-sm" style="flex: 1;">买入BTC</button>
+                                        <button class="btn btn-outline btn-sm" style="flex: 1;">加自选</button>
+                                        <button class="btn btn-outline btn-sm" style="flex: 1;">设提醒</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: #131a2b; border: 1px solid #1e2a3a; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+                                <div style="color: #8892a4; font-size: 11px; margin-bottom: 4px;">你</div>
+                                <div style="color: #e2e8f0; font-size: 13px;">帮我设一个条件单，BTC到66000就买1000U</div>
+                            </div>
+
+                            <div style="margin-bottom: 12px;">
+                                <div style="color: #00d4aa; font-size: 11px; margin-bottom: 4px; font-weight: 600;">🤖 AI助手</div>
+                                <div style="color: #8892a4; font-size: 12px; margin-bottom: 10px;">已为你生成条件单：</div>
+                                <div class="card" style="padding: 12px;">
+                                    <div style="color: #e2e8f0; font-size: 12px; font-weight: 600; margin-bottom: 10px;">📋 条件单预览</div>
+
+                                    <div style="color: #8892a4; font-size: 11px; line-height: 1.8;">
+                                        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1e2a3a;">
+                                            <span>币种</span>
+                                            <span style="color: #e2e8f0;">BTC/USDT</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1e2a3a;">
+                                            <span>方向</span>
+                                            <span style="color: #e2e8f0;">买入</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1e2a3a;">
+                                            <span>类型</span>
+                                            <span style="color: #e2e8f0;">条件单(触发后市价)</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1e2a3a;">
+                                            <span>触发价</span>
+                                            <span style="color: #e2e8f0;">$66,000.00</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1e2a3a;">
+                                            <span>买入金额</span>
+                                            <span style="color: #e2e8f0;">1,000 USDT</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 6px 0;">
+                                            <span>预计买入</span>
+                                            <span style="color: #e2e8f0;">~0.01515 BTC</span>
+                                        </div>
+                                    </div>
+
+                                    <div style="background: rgba(0, 212, 170, 0.1); border-radius: 8px; padding: 10px; margin: 10px 0; border-left: 3px solid #00d4aa;">
+                                        <div style="color: #00d4aa; font-size: 11px; font-weight: 600; margin-bottom: 6px;">🤖 AI建议:</div>
+                                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6;">
+                                            止损: <span style="color: #ff4d4d;">$64,000 (-3.0%)</span><br>
+                                            止盈: <span style="color: #00d4aa;">$70,000 (+6.1%)</span>
+                                        </div>
+                                        <label style="display: flex; align-items: center; gap: 6px; margin-top: 8px; cursor: pointer; color: #8892a4; font-size: 11px;">
+                                            <input type="checkbox"> 同时设置止盈止损
+                                        </label>
+                                    </div>
+
+                                    <div style="display: flex; gap: 6px;">
+                                        <button class="btn btn-green btn-sm" style="flex: 1;">确认下单</button>
+                                        <button class="btn btn-outline btn-sm" style="flex: 1;">修改参数</button>
+                                    </div>
+                                </div>
+                                <div style="color: #ff4d4d; font-size: 11px; margin-top: 8px;">⚠️ 仅供参考，投资风险自担</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 5: 我的 -->
+                <div class="tab-pane" id="tab-profile">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #00d4aa, #2e86c1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 18px;">X</div>
+                        <div>
+                            <div style="color: #e2e8f0; font-size: 16px; font-weight: 600;">Xizhen</div>
+                            <div style="color: #8892a4; font-size: 11px;">UID: 10086</div>
+                        </div>
+                    </div>
+
+                    <div class="asset-card">
+                        <div class="asset-row">
+                            <div>
+                                <div class="asset-label">账户资产</div>
+                                <div class="asset-value">$28,540.80</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <button style="background: none; border: none; color: #00d4aa; font-size: 16px; cursor: pointer;">👁️</button>
+                            </div>
+                        </div>
+                        <div class="asset-row" style="margin-bottom: 0;">
+                            <div>
+                                <div class="asset-label">7日盈亏</div>
+                                <div class="asset-value color-green">+$1,245.30 (+4.5%)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+                        <button class="btn btn-outline" style="flex: 1; padding: 10px; font-size: 12px;">我的奖励</button>
+                        <button class="btn btn-green" style="flex: 1; padding: 10px; font-size: 12px;">充值</button>
+                        <button class="btn btn-outline" style="flex: 1; padding: 10px; font-size: 12px;">提现</button>
+                    </div>
+
+                    <div style="color: #8892a4; font-size: 12px; margin-bottom: 12px;">账户</div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">📊</span>
+                            <span style="color: #e2e8f0; font-size: 13px;">资产管理</span>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">📋</span>
+                            <span style="color: #e2e8f0; font-size: 13px;">交易历史</span>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;" onclick="showFollowManagement()">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">🔄</span>
+                            <div>
+                                <div style="color: #e2e8f0; font-size: 13px;">跟单管理</div>
+                                <div style="color: #8892a4; font-size: 10px;">查看分润收入</div>
+                            </div>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">🏆</span>
+                            <span style="color: #e2e8f0; font-size: 13px;">成为交易员</span>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;" onclick="showOverlay('subscription')">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">⭐</span>
+                            <div>
+                                <div style="color: #e2e8f0; font-size: 13px;">AI订阅管理</div>
+                                <span class="badge badge-blue" style="margin-top: 2px;">免费版</span>
+                            </div>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">⚙️</span>
+                            <span style="color: #e2e8f0; font-size: 13px;">AI偏好设置</span>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">🎁</span>
+                            <div>
+                                <div style="color: #e2e8f0; font-size: 13px;">邀请奖励</div>
+                                <div style="color: #8892a4; font-size: 10px;">赚取佣金</div>
+                            </div>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div style="color: #8892a4; font-size: 12px; margin-bottom: 12px; margin-top: 20px;">其他</div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">🔒</span>
+                            <span style="color: #e2e8f0; font-size: 13px;">安全设置</span>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">❓</span>
+                            <span style="color: #e2e8f0; font-size: 13px;">帮助中心</span>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+
+                    <div class="card" style="padding: 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 16px;">ℹ️</span>
+                            <span style="color: #e2e8f0; font-size: 13px;">关于</span>
+                        </div>
+                        <span style="color: #8892a4; font-size: 14px;">›</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab(0)">
+                <div class="nav-icon">🔍</div>
+                <div>探索</div>
+            </div>
+            <div class="nav-item" onclick="switchTab(1)">
+                <div class="nav-icon">👥</div>
+                <div>跟单</div>
+            </div>
+            <div class="nav-item" onclick="switchTab(2)">
+                <div class="nav-icon">💹</div>
+                <div>交易</div>
+            </div>
+            <div class="nav-item" onclick="switchTab(3)">
+                <div class="nav-icon">🤖</div>
+                <div>AI助手</div>
+            </div>
+            <div class="nav-item" onclick="switchTab(4)">
+                <div class="nav-icon">👤</div>
+                <div>我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlays -->
+    <div class="overlay" id="overlay-subscription">
+        <div class="overlay-content">
+            <div class="overlay-header">
+                <button class="overlay-back" onclick="closeOverlay('subscription')">←</button>
+                <span class="overlay-title">AI 会员订阅</span>
+            </div>
+            <div class="overlay-body" id="subscription-content">
+                <!-- Will be filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay-profit-sharing">
+        <div class="overlay-content">
+            <div class="overlay-header">
+                <button class="overlay-back" onclick="closeOverlay('profit-sharing')">←</button>
+                <span class="overlay-title">跟单分润规则</span>
+            </div>
+            <div class="overlay-body" id="profit-sharing-content">
+                <!-- Will be filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 0;
+        let currentTradeTab = 'spot';
+
+        function switchTab(tabIndex) {
+            const tabs = document.querySelectorAll('.tab-pane');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            navItems.forEach(item => item.classList.remove('active'));
+
+            tabs[tabIndex].classList.add('active');
+            navItems[tabIndex].classList.add('active');
+            currentTab = tabIndex;
+
+            if (tabIndex === 3) {
+                initAIAssistant();
+            }
+            if (tabIndex === 4) {
+                initMyProfile();
+            }
+        }
+
+        function switchFollowTab(element, tabId) {
+            document.querySelectorAll('.follow-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('#tab-follow .subtab').forEach(el => el.classList.remove('active'));
+
+            element.classList.add('active');
+            document.getElementById(tabId).style.display = 'block';
+        }
+
+        function switchCopyTab(type) {
+            var humanList = document.getElementById('follow-list-human');
+            var aiList = document.getElementById('follow-list-ai');
+            var humanTab = document.getElementById('follow-tab-human');
+            var aiTab = document.getElementById('follow-tab-ai');
+            if (type === 'human') {
+                humanList.style.display = 'block';
+                aiList.style.display = 'none';
+                humanTab.style.background = '#1e2a3a';
+                humanTab.style.color = '#e2e8f0';
+                aiTab.style.background = 'transparent';
+                aiTab.style.color = '#8892a4';
+            } else {
+                humanList.style.display = 'none';
+                aiList.style.display = 'block';
+                aiTab.style.background = '#1e2a3a';
+                aiTab.style.color = '#e2e8f0';
+                humanTab.style.background = 'transparent';
+                humanTab.style.color = '#8892a4';
+            }
+        }
+
+        function switchTradeTab(element, tabId) {
+            document.querySelectorAll('.trade-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('#tab-trading .subtab').forEach(el => el.classList.remove('active'));
+
+            element.classList.add('active');
+            document.getElementById(tabId).style.display = 'block';
+            currentTradeTab = tabId;
+        }
+
+        function toggleBuySell(element, type) {
+            document.querySelectorAll('#spot .toggle-group .toggle-btn').forEach(btn => btn.classList.remove('active', 'sell'));
+            element.classList.add('active');
+            if (type === 'sell') {
+                element.classList.add('sell');
+                document.querySelector('#spot .buy-btn-large').textContent = '卖出 BTC';
+                document.querySelector('#spot .buy-btn-large').classList.add('sell-btn-large');
+            } else {
+                document.querySelector('#spot .buy-btn-large').textContent = '买入 BTC';
+                document.querySelector('#spot .buy-btn-large').classList.remove('sell-btn-large');
+            }
+        }
+
+        function toggleLongShort(element, type) {
+            const group = element.parentElement;
+            group.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active', 'short'));
+            element.classList.add('active');
+            if (type === 'short') {
+                element.classList.add('short');
+                document.querySelector('#futures .buy-btn-large').textContent = '开空 BTC';
+                document.querySelector('#futures .buy-btn-large').classList.add('sell-btn-large');
+            } else {
+                document.querySelector('#futures .buy-btn-large').textContent = '开多 BTC';
+                document.querySelector('#futures .buy-btn-large').classList.remove('sell-btn-large');
+            }
+        }
+
+        function updateLeverageRisk() {
+            const slider = document.getElementById('leverage-slider');
+            const display = document.getElementById('leverage-display');
+            const indicator = document.getElementById('risk-indicator');
+            const value = parseInt(slider.value);
+
+            display.textContent = value + 'x';
+
+            if (value <= 3) {
+                indicator.className = 'risk-indicator risk-low';
+                indicator.textContent = '🟢 低风险 (1-3x)';
+            } else if (value <= 10) {
+                indicator.className = 'risk-indicator risk-medium';
+                indicator.textContent = '🟡 中等风险，建议设止损 (4-10x)';
+            } else if (value <= 20) {
+                indicator.className = 'risk-indicator risk-high';
+                indicator.textContent = '🔴 高风险！强平距离仅3.2% (11-20x)';
+            } else {
+                indicator.className = 'risk-indicator risk-high';
+                indicator.textContent = '🔴 极高风险！强平距离仅1.8% (20x+)';
+            }
+        }
+
+        function showOverlay(overlayId) {
+            if (overlayId === 'subscription') {
+                initSubscriptionPage();
+                document.getElementById('overlay-subscription').classList.add('active');
+            } else if (overlayId === 'profit-sharing') {
+                initProfitSharingPage();
+                document.getElementById('overlay-profit-sharing').classList.add('active');
+            }
+        }
+
+        function closeOverlay(overlayId) {
+            if (overlayId === 'subscription') {
+                document.getElementById('overlay-subscription').classList.remove('active');
+            } else if (overlayId === 'profit-sharing') {
+                document.getElementById('overlay-profit-sharing').classList.remove('active');
+            }
+        }
+
+        function initSubscriptionPage() {
+            const content = document.getElementById('subscription-content');
+            content.innerHTML = `
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <span style="color: #8892a4; font-size: 13px;">当前方案</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="filter-pill active" style="padding: 6px 12px; font-size: 12px;">月付</button>
+                            <button class="filter-pill" style="padding: 6px 12px; font-size: 12px;">年付(省17%)</button>
+                        </div>
+                    </div>
+                    <div style="background: #131a2b; border: 1px solid #1e2a3a; border-radius: 12px; padding: 12px; color: #8892a4; font-size: 12px;">
+                        <span style="color: #e2e8f0; font-weight: 600;">免费版</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <div style="color: #e2e8f0; font-size: 12px; font-weight: 600; margin-bottom: 12px;">选择方案</div>
+
+                    <div class="card" style="padding: 12px; position: relative; border-color: #1e2a3a;">
+                        <div style="position: absolute; top: 8px; right: 8px; background: #131a2b; color: #e2e8f0; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600;">当前</div>
+                        <div style="color: #e2e8f0; font-weight: 600; margin-bottom: 8px;">免费版</div>
+                        <div style="color: #00d4aa; font-size: 16px; font-weight: 600; margin-bottom: 8px;">$0</div>
+                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6; margin-bottom: 10px;">
+                            • 2个基础策略<br>
+                            • 500U跟单上限<br>
+                            • 1个同时跟单<br>
+                            • 5%绩效分润<br>
+                            • 20次/天AI问答
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 12px;">
+                        <div style="color: #e2e8f0; font-weight: 600; margin-bottom: 8px;">基础版</div>
+                        <div style="color: #00d4aa; font-size: 16px; font-weight: 600; margin-bottom: 2px;">$9.9/月</div>
+                        <div style="color: #8892a4; font-size: 10px; margin-bottom: 8px;">年付$99/年</div>
+                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6; margin-bottom: 10px;">
+                            • 全部策略(5-8个)<br>
+                            • 5000U上限<br>
+                            • 3个同时跟单<br>
+                            • 2%绩效分润<br>
+                            • 无限AI问答
+                        </div>
+                        <button class="btn btn-green btn-sm" style="width: 100%;">订阅</button>
+                    </div>
+
+                    <div class="card" style="padding: 12px; border-color: #00d4aa; position: relative;">
+                        <div style="position: absolute; top: 8px; right: 8px; background: rgba(0, 212, 170, 0.1); color: #00d4aa; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600;">推荐</div>
+                        <div style="color: #e2e8f0; font-weight: 600; margin-bottom: 8px;">专业版</div>
+                        <div style="color: #00d4aa; font-size: 16px; font-weight: 600; margin-bottom: 2px;">$29.9/月</div>
+                        <div style="color: #8892a4; font-size: 10px; margin-bottom: 8px;">年付$299/年</div>
+                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6; margin-bottom: 10px;">
+                            • 全部+高级策略(10+)<br>
+                            • 5万U上限<br>
+                            • 5个同时跟单<br>
+                            • 2%绩效分润<br>
+                            • 无限AI+深度分析
+                        </div>
+                        <button class="btn btn-green btn-sm" style="width: 100%; background: #00d4aa;">订阅</button>
+                    </div>
+
+                    <div class="card" style="padding: 12px;">
+                        <div style="color: #e2e8f0; font-weight: 600; margin-bottom: 8px;">旗舰版</div>
+                        <div style="color: #00d4aa; font-size: 16px; font-weight: 600; margin-bottom: 2px;">$99.9/月</div>
+                        <div style="color: #8892a4; font-size: 10px; margin-bottom: 8px;">年付$999/年</div>
+                        <div style="color: #8892a4; font-size: 11px; line-height: 1.6; margin-bottom: 10px;">
+                            • 全部+定制策略<br>
+                            • 无限跟单<br>
+                            • 无限同时跟单<br>
+                            • 0%绩效分润<br>
+                            • 专属AI顾问
+                        </div>
+                        <button class="btn btn-outline btn-sm" style="width: 100%;">订阅</button>
+                    </div>
+                </div>
+
+                <div style="background: rgba(46,134,193,0.08); border: 1px solid rgba(46,134,193,0.25); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+                    <div style="color: #2e86c1; font-size: 11px; font-weight: 600; margin-bottom: 4px;">💡 对比行业标杆</div>
+                    <div style="color: #8892a4; font-size: 10px; line-height: 1.6;">同类产品 Cryptohopper 定价 $29-$129/月，我们提供更全面的AI策略+跟单功能，价格仅为其 40-50%，且无需另付 Copy Trading 费用</div>
+                </div>
+                <div style="background: rgba(0, 212, 170, 0.1); border: 1px solid rgba(0, 212, 170, 0.3); border-radius: 8px; padding: 10px; text-align: center; color: #00d4aa; font-size: 12px; margin-bottom: 16px;">
+                    🎉 试用专业版 7 天，无需支付
+                </div>
+            `;
+        }
+
+        function initProfitSharingPage() {
+            const content = document.getElementById('profit-sharing-content');
+            content.innerHTML = `
+                <div class="section-title" style="margin-bottom: 16px;">分润机制</div>
+
+                <div class="card" style="margin-bottom: 16px;">
+                    <div style="text-align: center; margin-bottom: 12px;">
+                        <svg viewBox="0 0 200 200" style="width: 100%; height: 150px;">
+                            <circle cx="100" cy="100" r="80" fill="rgba(0, 212, 170, 0.1)" stroke="#00d4aa" stroke-width="2"/>
+                            <path d="M 100 100 L 100 20 A 80 80 0 0 1 165 35 Z" fill="#00d4aa" opacity="0.6"/>
+                            <path d="M 100 100 L 165 35 A 80 80 0 0 1 180 100 Z" fill="#00d4aa" opacity="0.4"/>
+                            <path d="M 100 100 L 180 100 A 80 80 0 0 1 100 180 Z" fill="#00d4aa" opacity="0.2"/>
+                            <text x="100" y="50" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="600">87.5%</text>
+                            <text x="100" y="150" text-anchor="middle" fill="#e2e8f0" font-size="12">跟单者</text>
+                        </svg>
+                    </div>
+                    <div style="color: #8892a4; font-size: 12px; line-height: 1.8;">
+                        <div>✓ 交易员: <span style="color: #e2e8f0;">8%-12%</span></div>
+                        <div>✓ 平台: <span style="color: #e2e8f0;">2%-3%</span></div>
+                        <div>✓ 跟单者: <span style="color: #e2e8f0;">剩余部分</span></div>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-bottom: 12px;">交易员等级</div>
+
+                <div class="card" style="padding: 10px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 16px;">🥉</span>
+                        <div>
+                            <div style="color: #e2e8f0; font-size: 12px; font-weight: 600;">青铜</div>
+                            <div style="color: #8892a4; font-size: 11px;">30天收益>0% | ≥5人跟单</div>
+                        </div>
+                    </div>
+                    <div style="color: #00d4aa; font-size: 12px; text-align: right;">分润: 8%</div>
+                </div>
+
+                <div class="card" style="padding: 10px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 16px;">🥈</span>
+                        <div>
+                            <div style="color: #e2e8f0; font-size: 12px; font-weight: 600;">白银</div>
+                            <div style="color: #8892a4; font-size: 11px;">60天收益>10% | ≥20人</div>
+                        </div>
+                    </div>
+                    <div style="color: #00d4aa; font-size: 12px; text-align: right;">分润: 9%</div>
+                </div>
+
+                <div class="card" style="padding: 10px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 16px;">🥇</span>
+                        <div>
+                            <div style="color: #e2e8f0; font-size: 12px; font-weight: 600;">黄金</div>
+                            <div style="color: #8892a4; font-size: 11px;">90天收益>20% | ≥50人 | 回撤<15%</div>
+                        </div>
+                    </div>
+                    <div style="color: #00d4aa; font-size: 12px; text-align: right;">分润: 10%</div>
+                </div>
+
+                <div class="card" style="padding: 10px; margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 16px;">💎</span>
+                        <div>
+                            <div style="color: #e2e8f0; font-size: 12px; font-weight: 600;">钻石</div>
+                            <div style="color: #8892a4; font-size: 11px;">180天收益>40% | ≥100人 | 回撤<10%</div>
+                        </div>
+                    </div>
+                    <div style="color: #00d4aa; font-size: 12px; text-align: right;">分润: 12%</div>
+                </div>
+
+                <div class="section-title" style="margin-bottom: 12px;">高水位线机制</div>
+
+                <div class="card" style="padding: 10px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: #8892a4; font-size: 12px; padding: 8px 0; border-bottom: 1px solid #1e2a3a;">
+                        <span>交易 1: +100U</span>
+                        <span style="color: #00d4aa;">分润10U ✅</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: #8892a4; font-size: 12px; padding: 8px 0; border-bottom: 1px solid #1e2a3a;">
+                        <span>交易 2: -60U</span>
+                        <span style="color: #ff4d4d;">分润0 (亏损不收费)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: #8892a4; font-size: 12px; padding: 8px 0;">
+                        <span>交易 3: +80U</span>
+                        <span style="color: #00d4aa;">仅20U超出高水位 → 分润2U</span>
+                    </div>
+                </div>
+
+                <div style="background: rgba(46, 134, 193, 0.1); border-left: 3px solid #2e86c1; border-radius: 8px; padding: 10px; color: #8892a4; font-size: 11px; line-height: 1.6; margin-bottom: 16px;">
+                    保护跟单者利益：交易员必须先帮你回本，才能收取新的分润。
+                </div>
+
+                <div class="section-title" style="margin-bottom: 12px;">AI策略绩效分润</div>
+
+                <div style="color: #8892a4; font-size: 12px; line-height: 1.8;">
+                    <div style="padding: 8px 0; border-bottom: 1px solid #1e2a3a;">
+                        <span>免费用户</span>
+                        <span style="float: right; color: #e2e8f0; font-weight: 600;">5%</span>
+                    </div>
+                    <div style="padding: 8px 0; border-bottom: 1px solid #1e2a3a;">
+                        <span>基础/专业版</span>
+                        <span style="float: right; color: #e2e8f0; font-weight: 600;">2%</span>
+                    </div>
+                    <div style="padding: 8px 0;">
+                        <span>旗舰版</span>
+                        <span style="float: right; color: #e2e8f0; font-weight: 600;">0%</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showAIChat(type) {
+            document.getElementById('ai-chat-view').style.display = 'block';
+            document.querySelector('#tab-ai > div:first-child').style.display = 'none';
+        }
+
+        function backToAIHome() {
+            document.getElementById('ai-chat-view').style.display = 'none';
+            document.querySelector('#tab-ai > div:first-child').style.display = 'block';
+        }
+
+        function showFollowManagement() {
+            alert('跟单管理页面 - 查看分润收入详情');
+        }
+
+        function initAIAssistant() {
+            // AI Assistant tab initialized
+        }
+
+        function initMyProfile() {
+            // Profile tab initialized
+        }
+    </script>
+</body>
+</html>

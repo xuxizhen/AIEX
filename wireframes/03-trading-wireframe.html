@@ -1,0 +1,244 @@
+<h2>交易页面 Wireframe</h2>
+<p class="subtitle">现货 / 合约双模式 + AI 深度融入交易流程</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">📱 交易页 — 现货模式</div>
+    <div class="mockup-body" style="padding: 0; background: #0a0a1a; max-height: 700px; overflow-y: auto;">
+
+      <!-- Status Bar -->
+      <div style="padding: 8px 16px; display: flex; justify-content: space-between; font-size: 11px; color: #888;">
+        <span>9:41</span>
+        <span>📶 🔋</span>
+      </div>
+
+      <!-- 交易对选择 + 现货/合约切换 -->
+      <div style="padding: 0 16px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <div style="width: 24px; height: 24px; background: #f7931a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #fff;">₿</div>
+            <span style="font-size: 16px; font-weight: 700; color: #fff;">BTC/USDT</span>
+            <span style="color: #666; font-size: 14px;">▾</span>
+          </div>
+          <div style="margin-left: auto; display: flex; background: #1a1a3a; border-radius: 8px; overflow: hidden;">
+            <div style="padding: 6px 14px; font-size: 12px; background: #a78bfa; color: #fff; font-weight: 600;">现货</div>
+            <div style="padding: 6px 14px; font-size: 12px; color: #888;">合约</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI 自然语言下单栏 -->
+      <div style="margin: 0 16px 12px;">
+        <div style="background: linear-gradient(135deg, rgba(167,139,250,0.1), rgba(96,165,250,0.1)); border: 1px solid rgba(167,139,250,0.25); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 14px;">🤖</span>
+          <span style="color: #888; font-size: 12px; flex: 1;">用自然语言下单："买入 0.1 BTC" 或 "在 65000 挂限价单"</span>
+          <span style="color: #a78bfa; font-size: 12px;">🎤</span>
+        </div>
+      </div>
+
+      <!-- 价格 + 迷你K线 -->
+      <div style="padding: 0 16px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <div style="font-size: 28px; font-weight: 700; color: #34d399;">68,241.50</div>
+            <div style="font-size: 12px; color: #34d399;">+3.21% ≈ ¥493,184</div>
+          </div>
+          <div style="text-align: right; font-size: 11px; color: #888; line-height: 1.6;">
+            <div>24H高 <span style="color: #ccc;">69,120</span></div>
+            <div>24H低 <span style="color: #ccc;">65,800</span></div>
+            <div>24H量 <span style="color: #ccc;">12.5K BTC</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 简化K线区域 -->
+      <div style="margin: 0 16px 12px; height: 120px; background: #12122a; border-radius: 8px; position: relative; overflow: hidden;">
+        <svg viewBox="0 0 340 120" style="width: 100%; height: 100%;">
+          <path d="M0,90 L20,85 L40,70 L60,75 L80,60 L100,55 L120,65 L140,50 L160,45 L180,55 L200,40 L220,35 L240,30 L260,38 L280,25 L300,20 L320,28 L340,22" stroke="#34d399" fill="none" stroke-width="1.5"/>
+          <path d="M0,90 L20,85 L40,70 L60,75 L80,60 L100,55 L120,65 L140,50 L160,45 L180,55 L200,40 L220,35 L240,30 L260,38 L280,25 L300,20 L320,28 L340,22 V120 H0 Z" fill="url(#chartGrad)" opacity="0.15"/>
+          <defs><linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="transparent"/></linearGradient></defs>
+        </svg>
+        <div style="position: absolute; bottom: 6px; right: 8px; display: flex; gap: 6px;">
+          <span style="font-size: 10px; color: #888; padding: 2px 6px; background: rgba(255,255,255,0.05); border-radius: 3px;">1H</span>
+          <span style="font-size: 10px; color: #a78bfa; padding: 2px 6px; background: rgba(167,139,250,0.15); border-radius: 3px;">4H</span>
+          <span style="font-size: 10px; color: #888; padding: 2px 6px; background: rgba(255,255,255,0.05); border-radius: 3px;">1D</span>
+          <span style="font-size: 10px; color: #888; padding: 2px 6px; background: rgba(255,255,255,0.05); border-radius: 3px;">1W</span>
+        </div>
+      </div>
+
+      <!-- AI 分析条 -->
+      <div style="margin: 0 16px 12px; background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.15); border-radius: 10px; padding: 10px 12px;">
+        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+          <span style="font-size: 11px;">🧠</span>
+          <span style="font-size: 11px; color: #a78bfa; font-weight: 600;">AI 分析</span>
+          <span style="font-size: 10px; color: #888; margin-left: auto;">点击展开详情 ›</span>
+        </div>
+        <div style="font-size: 12px; color: #ccc; line-height: 1.5;">
+          短期趋势 <span style="color: #34d399; font-weight: 600;">偏多</span> · 支撑位 $66,800 · 阻力位 $69,200 · 建议仓位 <span style="color: #f0c040;">30%</span>
+        </div>
+      </div>
+
+      <!-- 买入/卖出面板 -->
+      <div style="padding: 0 16px;">
+        <!-- 买/卖切换 -->
+        <div style="display: flex; margin-bottom: 12px;">
+          <div style="flex: 1; text-align: center; padding: 8px; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.3); border-radius: 8px 0 0 8px; color: #34d399; font-size: 13px; font-weight: 600;">买入</div>
+          <div style="flex: 1; text-align: center; padding: 8px; background: #1a1a3a; border: 1px solid #2a2a4a; border-radius: 0 8px 8px 0; color: #888; font-size: 13px;">卖出</div>
+        </div>
+
+        <!-- 订单类型 -->
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <span style="font-size: 11px; color: #a78bfa; background: rgba(167,139,250,0.15); padding: 4px 10px; border-radius: 6px;">限价</span>
+          <span style="font-size: 11px; color: #888; padding: 4px 10px;">市价</span>
+          <span style="font-size: 11px; color: #888; padding: 4px 10px;">止盈止损</span>
+        </div>
+
+        <!-- 价格输入 -->
+        <div style="background: #12122a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 11px; color: #888;">价格</span>
+          <span style="font-size: 14px; color: #fff;">68,241.50</span>
+          <span style="font-size: 11px; color: #888;">USDT</span>
+        </div>
+
+        <!-- 数量输入 -->
+        <div style="background: #12122a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 11px; color: #888;">数量</span>
+          <span style="font-size: 14px; color: #666;">输入数量</span>
+          <span style="font-size: 11px; color: #888;">BTC</span>
+        </div>
+
+        <!-- 快捷比例 -->
+        <div style="display: flex; gap: 6px; margin-bottom: 12px;">
+          <div style="flex: 1; text-align: center; padding: 5px; background: #1a1a3a; border-radius: 6px; font-size: 11px; color: #888;">25%</div>
+          <div style="flex: 1; text-align: center; padding: 5px; background: #1a1a3a; border-radius: 6px; font-size: 11px; color: #888;">50%</div>
+          <div style="flex: 1; text-align: center; padding: 5px; background: #1a1a3a; border-radius: 6px; font-size: 11px; color: #888;">75%</div>
+          <div style="flex: 1; text-align: center; padding: 5px; background: #1a1a3a; border-radius: 6px; font-size: 11px; color: #888;">100%</div>
+        </div>
+
+        <!-- AI 建议卡片 -->
+        <div style="background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.2); border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
+            <span style="font-size: 11px;">💡</span>
+            <span style="font-size: 11px; color: #f0c040; font-weight: 600;">AI 建议</span>
+          </div>
+          <div style="font-size: 11px; color: #ccc; line-height: 1.5;">
+            当前价格接近阻力位，建议设置止损在 $66,500。分批建仓更稳妥。
+          </div>
+          <div style="display: flex; gap: 6px; margin-top: 8px;">
+            <button style="background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); color: #a78bfa; padding: 4px 10px; border-radius: 6px; font-size: 10px; cursor: pointer;">自动设置止损</button>
+            <button style="background: transparent; border: 1px solid #333; color: #888; padding: 4px 10px; border-radius: 6px; font-size: 10px; cursor: pointer;">忽略</button>
+          </div>
+        </div>
+
+        <!-- 可用余额 + 买入按钮 -->
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="font-size: 11px; color: #888;">可用 6,423.51 USDT</span>
+          <span style="font-size: 11px; color: #888;">≈ 0.0941 BTC</span>
+        </div>
+        <button style="width: 100%; padding: 12px; background: linear-gradient(135deg, #34d399, #059669); border: none; border-radius: 10px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 16px;">买入 BTC</button>
+      </div>
+
+      <!-- Bottom Tab Bar -->
+      <div style="position: sticky; bottom: 0; background: #0a0a1a; border-top: 1px solid #1a1a3a; display: flex; justify-content: space-around; padding: 8px 0 20px;">
+        <div style="text-align: center;"><div style="font-size: 20px;">🧠</div><div style="font-size: 10px; color: #666;">首页</div></div>
+        <div style="text-align: center;"><div style="font-size: 20px;">📈</div><div style="font-size: 10px; color: #a78bfa;">交易</div></div>
+        <div style="text-align: center;"><div style="font-size: 20px;">🏆</div><div style="font-size: 10px; color: #666;">跟单</div></div>
+        <div style="text-align: center;"><div style="font-size: 20px;">👤</div><div style="font-size: 10px; color: #666;">我的</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：合约模式 差异部分 -->
+  <div>
+    <div class="mockup">
+      <div class="mockup-header">📱 合约模式 — 差异部分</div>
+      <div class="mockup-body" style="padding: 16px; background: #0a0a1a;">
+
+        <!-- 现货/合约切换 - 合约选中 -->
+        <div style="display: flex; background: #1a1a3a; border-radius: 8px; overflow: hidden; margin-bottom: 16px;">
+          <div style="flex:1; padding: 6px 14px; font-size: 12px; color: #888; text-align: center;">现货</div>
+          <div style="flex:1; padding: 6px 14px; font-size: 12px; background: #a78bfa; color: #fff; font-weight: 600; text-align: center;">合约</div>
+        </div>
+
+        <!-- 方向切换 -->
+        <div style="display: flex; margin-bottom: 12px; gap: 8px;">
+          <div style="flex: 1; text-align: center; padding: 8px; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.3); border-radius: 8px; color: #34d399; font-size: 13px; font-weight: 600;">开多 Long</div>
+          <div style="flex: 1; text-align: center; padding: 8px; background: #1a1a3a; border: 1px solid #2a2a4a; border-radius: 8px; color: #888; font-size: 13px;">开空 Short</div>
+        </div>
+
+        <!-- 保证金模式 + 杠杆 -->
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <div style="flex: 1; background: #12122a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 8px 10px; text-align: center;">
+            <div style="font-size: 10px; color: #888;">保证金</div>
+            <div style="font-size: 12px; color: #fff; font-weight: 600;">逐仓</div>
+          </div>
+          <div style="flex: 1; background: #12122a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 8px 10px; text-align: center;">
+            <div style="font-size: 10px; color: #888;">杠杆</div>
+            <div style="font-size: 12px; color: #f0c040; font-weight: 600;">20x</div>
+          </div>
+        </div>
+
+        <!-- 杠杆滑块 + AI 风险 -->
+        <div style="margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 11px; color: #888;">杠杆倍数</span>
+            <span style="font-size: 11px; color: #f0c040; font-weight: 600;">20x</span>
+          </div>
+          <!-- 滑块模拟 -->
+          <div style="height: 6px; background: #1a1a3a; border-radius: 3px; position: relative; margin-bottom: 4px;">
+            <div style="width: 16%; height: 100%; background: linear-gradient(90deg, #34d399, #f0c040); border-radius: 3px;"></div>
+            <div style="position: absolute; left: 16%; top: -4px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transform: translateX(-50%);"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 9px; color: #666;">
+            <span>1x</span><span>25x</span><span>50x</span><span>75x</span><span>100x</span><span>125x</span>
+          </div>
+        </div>
+
+        <!-- AI 风控面板 -->
+        <div style="background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+            <span style="font-size: 12px;">🛡️</span>
+            <span style="font-size: 12px; color: #ef4444; font-weight: 600;">AI 风控评估</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
+            <div>
+              <div style="color: #888;">风险等级</div>
+              <div style="color: #f0c040; font-weight: 600;">⚠️ 中等</div>
+            </div>
+            <div>
+              <div style="color: #888;">预估强平价</div>
+              <div style="color: #fff; font-weight: 600;">$65,128</div>
+            </div>
+            <div>
+              <div style="color: #888;">建议止损</div>
+              <div style="color: #ef4444; font-weight: 600;">$66,500</div>
+            </div>
+            <div>
+              <div style="color: #888;">建议止盈</div>
+              <div style="color: #34d399; font-weight: 600;">$72,000</div>
+            </div>
+          </div>
+          <div style="margin-top: 8px; display: flex; gap: 6px;">
+            <button style="flex: 1; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); color: #a78bfa; padding: 5px; border-radius: 6px; font-size: 10px; cursor: pointer;">采纳 AI 建议</button>
+            <button style="flex: 1; background: transparent; border: 1px solid #333; color: #888; padding: 5px; border-radius: 6px; font-size: 10px; cursor: pointer;">自定义</button>
+          </div>
+        </div>
+
+        <!-- 开多按钮 -->
+        <button style="width: 100%; padding: 12px; background: linear-gradient(135deg, #34d399, #059669); border: none; border-radius: 10px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;">开多 BTC/USDT</button>
+      </div>
+    </div>
+
+    <!-- 设计要点 -->
+    <div class="mockup" style="margin-top: 16px;">
+      <div class="mockup-header">交易页 AI 融入要点</div>
+      <div class="mockup-body" style="padding: 16px; font-size: 12px; line-height: 1.8; color: #ccc;">
+        <div style="margin-bottom: 8px;">🤖 <strong>自然语言下单栏</strong> — 页面顶部常驻，支持文字和语音</div>
+        <div style="margin-bottom: 8px;">🧠 <strong>AI 分析条</strong> — K线下方，一行摘要 + 展开详情</div>
+        <div style="margin-bottom: 8px;">💡 <strong>AI 下单建议</strong> — 在下单面板内嵌，建议止损/仓位</div>
+        <div style="margin-bottom: 8px;">🛡️ <strong>AI 风控面板</strong> — 合约模式专有，预估强平价 + 止盈止损建议</div>
+        <div>📊 <strong>AI 不替代 K 线</strong> — 有经验的用户仍然可以看图交易，AI 是辅助不是替代</div>
+      </div>
+    </div>
+  </div>
+</div>

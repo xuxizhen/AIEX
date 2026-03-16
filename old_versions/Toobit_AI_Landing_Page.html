@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toobit AI - AI 驱动的加密货币交易平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-dark-bg: #0a0e17;
+            --color-dark-secondary: #131a2b;
+            --color-accent-green: #00d4aa;
+            --color-accent-blue: #2e86c1;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #a0a9b8;
+            --color-border: rgba(46, 134, 193, 0.2);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--color-dark-bg) 0%, #0f1419 100%);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 1px 1px, rgba(46, 134, 193, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        main {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 212, 170, 0.2), inset 0 0 20px rgba(46, 134, 193, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 212, 170, 0.3), inset 0 0 30px rgba(46, 134, 193, 0.15);
+            }
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(19, 26, 43, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
+        }
+
+        /* Header */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 14, 23, 0.8);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: var(--color-accent-green);
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 14px;
+        }
+
+        .nav a:hover {
+            color: var(--color-accent-green);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 40px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(46, 134, 193, 0.05) 0%, transparent 100%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 212, 170, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 28px;
+            color: var(--color-text-primary);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .hero .tagline {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--color-accent-green);
+            color: var(--color-dark-bg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--color-accent-blue);
+            color: var(--color-accent-blue);
+        }
+
+        .btn-outline:hover {
+            background: rgba(46, 134, 193, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Phone Mockup */
+        .phone-mockup {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .phone {
+            width: 280px;
+            height: 580px;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            border-radius: 40px;
+            border: 12px solid #1a2332;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(46, 134, 193, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background: #1a2332;
+            border-radius: 0 0 30px 30px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            padding: 30px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #0f1419 0%, #131a2b 100%);
+        }
+
+        .chart-bar {
+            height: 8px;
+            background: linear-gradient(90deg, var(--color-accent-green) 0%, var(--color-accent-blue) 100%);
+            border-radius: 4px;
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        .chart-bar:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .chart-bar:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .price-info {
+            background: rgba(46, 134, 193, 0.1);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Section Spacing */
+        section {
+            padding: 80px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 60px;
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .section-title .highlight {
+            color: var(--color-accent-green);
+        }
+
+        /* Value Props */
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 0;
+        }
+
+        .prop-card {
+            padding: 40px;
+            glass;
+            border-radius: 16px;
+            animation: fadeInUp 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .prop-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .prop-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .prop-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.1);
+            border-color: var(--color-accent-green);
+        }
+
+        .prop-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .prop-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--color-text-primary);
+        }
+
+        .prop-card p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* Feature Showcase */
+        .feature-showcase {
+            padding: 80px 40px;
+            background: linear-gradient(180deg, rgba(46, 134, 193, 0.05) 0%, transparent 100%);
+        }
+
+        .showcase-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 120px;
+        }
+
+        .showcase-content:nth-child(even) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .showcase-content:nth-child(even) .showcase-text {
+            order: 2;
+        }
+
+        .showcase-content:nth-child(even) .showcase-phone {
+            order: 1;
+        }
+
+        .showcase-text h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--color-text-primary);
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .showcase-text ul {
+            list-style: none;
+        }
+
+        .showcase-text li {
+            padding: 12px 0;
+            padding-left: 32px;
+            position: relative;
+            color: var(--color-text-secondary);
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .showcase-text li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-accent-green);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .showcase-phone {
+            display: flex;
+            justify-content: center;
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        .showcase-phone .phone {
+            width: 300px;
+            height: 620px;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            background: linear-gradient(180deg, transparent 0%, rgba(46, 134, 193, 0.05) 100%);
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .price-card {
+            padding: 40px 32px;
+            glass;
+            border-radius: 16px;
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .price-card:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .price-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .price-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .price-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .price-card.recommended {
+            transform: scale(1.05);
+            border-color: var(--color-accent-green);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .price-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.15);
+        }
+
+        .price-card.recommended:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .badge {
+            background: var(--color-accent-green);
+            color: var(--color-dark-bg);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 16px;
+            align-self: center;
+        }
+
+        .price-card h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: var(--color-text-primary);
+        }
+
+        .price {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-accent-green);
+            margin-bottom: 8px;
+        }
+
+        .price-period {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .price-features {
+            text-align: left;
+            margin-bottom: 32px;
+            flex-grow: 1;
+        }
+
+        .price-features li {
+            padding: 8px 0;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            list-style: none;
+        }
+
+        .price-features li::before {
+            content: '✓ ';
+            color: var(--color-accent-green);
+            font-weight: bold;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: linear-gradient(180deg, rgba(46, 134, 193, 0.05) 0%, transparent 100%);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .step:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .step:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .step:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .step:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-blue) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-dark-bg);
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        /* Security Section */
+        .security-section {
+            background: linear-gradient(180deg, transparent 0%, rgba(46, 134, 193, 0.08) 100%);
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .security-item {
+            padding: 32px;
+            glass;
+            border-radius: 16px;
+            animation: fadeInUp 0.6s ease-out;
+            border-left: 4px solid var(--color-accent-green);
+        }
+
+        .security-item:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .security-item:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .security-item:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .security-item h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--color-accent-green);
+        }
+
+        .security-item p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 14, 23, 0.9);
+            border-top: 1px solid var(--color-border);
+            padding: 60px 40px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 16px;
+            color: var(--color-accent-green);
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--color-accent-green);
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            padding: 12px 20px;
+            background: rgba(46, 134, 193, 0.2);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: var(--color-accent-green);
+            color: var(--color-dark-bg);
+            border-color: var(--color-accent-green);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--color-border);
+            padding-top: 30px;
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 16px 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 40px 20px;
+                min-height: auto;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero .subtitle {
+                font-size: 20px;
+            }
+
+            .hero .tagline {
+                font-size: 16px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .section-title {
+                font-size: 32px;
+                margin-bottom: 40px;
+            }
+
+            .showcase-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin-bottom: 80px;
+            }
+
+            .showcase-content:nth-child(even) .showcase-text {
+                order: 1;
+            }
+
+            .showcase-content:nth-child(even) .showcase-phone {
+                order: 2;
+            }
+
+            .showcase-text h2 {
+                font-size: 24px;
+            }
+
+            .value-props {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .price-card.recommended {
+                transform: scale(1);
+            }
+
+            .price-card.recommended:hover {
+                transform: translateY(-8px);
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .phone-mockup {
+                margin-top: 30px;
+            }
+
+            .phone {
+                width: 240px;
+                height: 500px;
+            }
+
+            .showcase-phone .phone {
+                width: 240px;
+                height: 500px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 12px 16px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 30px 16px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero .subtitle {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .showcase-text h2 {
+                font-size: 20px;
+            }
+
+            .prop-card {
+                padding: 24px;
+            }
+
+            section {
+                padding: 40px 16px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .download-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Toobit AI</div>
+        <nav class="nav">
+            <a href="#features">功能</a>
+            <a href="#trading">交易</a>
+            <a href="#pricing">定价</a>
+            <a href="#security">安全</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Toobit AI</h1>
+                <p class="subtitle">AI 驱动的下一代加密货币交易平台</p>
+                <p class="tagline">AI帮你看懂市场、辅助决策、跟上高手</p>
+                <p style="font-size: 12px; color: var(--color-accent-green); margin-bottom: 32px;">多个竞品已退出市场，我们经过市场验证</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary">下载 App</button>
+                    <button class="btn btn-outline">了解更多</button>
+                </div>
+            </div>
+            <div class="phone-mockup">
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="price-info">BTC: $95,480 +2.5%</div>
+                        <div class="chart-bar" style="width: 70%;"></div>
+                        <div class="chart-bar" style="width: 85%;"></div>
+                        <div class="chart-bar" style="width: 60%;"></div>
+                        <div class="price-info">ETH: $3,240 +1.8%</div>
+                        <div class="chart-bar" style="width: 75%;"></div>
+                        <div class="chart-bar" style="width: 80%;"></div>
+                        <div class="price-info">AI 建议: 长期看涨</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Value Props -->
+        <section id="features">
+            <h2 class="section-title">为什么选择 <span class="highlight">Toobit AI</span></h2>
+            <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: 40px; font-size: 14px;">✓ 14+ 竞品深度调研验证</p>
+            <div class="value-props">
+                <div class="prop-card">
+                    <div class="prop-icon">🤖</div>
+                    <h3>AI 全链路交易</h3>
+                    <p>从行情分析到下单执行，AI贯穿每一个交易环节，让交易更智能、更高效</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon">📊</div>
+                    <h3>真人+AI混合跟单</h3>
+                    <p>不只跟高手，还能跟AI策略，24小时不停歇，智能分散风险</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon">💬</div>
+                    <h3>自然语言交易</h3>
+                    <p>告诉AI你想做什么，一句话完成下单，无需复杂操作</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: var(--color-accent-green);"><strong>无需配置 API Key，账户直连交易</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Showcase 1: AI辅助交易 -->
+        <section id="trading" class="feature-showcase">
+            <h2 class="section-title">AI <span class="highlight">辅助交易</span></h2>
+            <div class="showcase-content">
+                <div class="showcase-text">
+                    <h2>智能交易助手</h2>
+                    <ul>
+                        <li><strong>AI一句话下单：</strong>输入"1000U买BTC"，自动填单</li>
+                        <li><strong>AI智能止盈止损：</strong>根据波动率自动建议</li>
+                        <li><strong>AI杠杆风险评估：</strong>实时显示风险等级</li>
+                        <li><strong>AI持仓诊断：</strong>一键分析资产健康度</li>
+                    </ul>
+                </div>
+                <div class="showcase-phone">
+                    <div class="phone">
+                        <div class="phone-screen">
+                            <div class="price-info">你的持仓</div>
+                            <div class="chart-bar" style="width: 40%; background: linear-gradient(90deg, var(--color-accent-green) 0%, var(--color-accent-green) 100%);"></div>
+                            <div class="price-info">BTC: 0.5 → $47,740</div>
+                            <div class="price-info">风险等级: 低 ✓</div>
+                            <div class="chart-bar" style="width: 60%;"></div>
+                            <div class="price-info">ETH: 5 → $16,200</div>
+                            <div class="price-info">AI建议: 加仓</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Showcase 2: 跟单广场 -->
+            <h2 class="section-title">跟单 <span class="highlight">广场</span></h2>
+            <div class="showcase-content">
+                <div class="showcase-phone">
+                    <div class="phone">
+                        <div class="phone-screen">
+                            <div class="price-info">排行榜</div>
+                            <div class="chart-bar" style="width: 85%;"></div>
+                            <div class="price-info">收益率: +156%</div>
+                            <div class="chart-bar" style="width: 70%;"></div>
+                            <div class="price-info">胜率: 72%</div>
+                            <div class="chart-bar" style="width: 90%;"></div>
+                            <div class="price-info">稳健度: 高</div>
+                            <div class="price-info">跟单 ✓</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-text">
+                    <h2>跟单广场</h2>
+                    <ul>
+                        <li><strong>真人交易员排行榜：</strong>收益率、胜率、稳健度多维排名</li>
+                        <li><strong>AI策略实盘跟单：</strong>有真实仓位的AI策略，完全透明</li>
+                        <li><strong>智能风控：</strong>跟单止损、AI参数建议</li>
+                        <li><strong>5个初期AI策略：</strong>稳健Alpha、趋势猎手、链上信号、情绪反转、网格机器人</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="pricing-section">
+            <h2 class="section-title">AI 策略 <span class="highlight">订阅</span></h2>
+            <div style="background: rgba(0, 212, 170, 0.08); border: 1px solid rgba(0, 212, 170, 0.2); border-radius: 12px; padding: 24px; margin-bottom: 40px; text-align: center;">
+                <p style="color: var(--color-text-primary); font-size: 16px; margin-bottom: 8px;"><strong>相比行业标杆 Cryptohopper（$29-$129/月）</strong></p>
+                <p style="color: var(--color-accent-green); font-size: 14px;">我们提供更全面的功能，价格仅为其 40-50%</p>
+            </div>
+            <div class="pricing-cards">
+                <div class="price-card">
+                    <h3>免费版</h3>
+                    <div class="price">$0</div>
+                    <div class="price-period">永久免费</div>
+                    <ul class="price-features">
+                        <li>2个基础策略</li>
+                        <li>500U跟单上限</li>
+                        <li>20次/天AI问答</li>
+                        <li>基础风控</li>
+                    </ul>
+                    <button class="btn btn-outline">开始使用</button>
+                </div>
+
+                <div class="price-card">
+                    <h3>基础版</h3>
+                    <div class="price">$9.9</div>
+                    <div class="price-period">每月</div>
+                    <ul class="price-features">
+                        <li>全部策略</li>
+                        <li>5000U跟单上限</li>
+                        <li>无限AI问答</li>
+                        <li>进阶风控</li>
+                    </ul>
+                    <button class="btn btn-outline">升级</button>
+                </div>
+
+                <div class="price-card recommended">
+                    <span class="badge">推荐</span>
+                    <h3>专业版</h3>
+                    <div class="price">$29.9</div>
+                    <div class="price-period">每月</div>
+                    <ul class="price-features">
+                        <li>全部策略</li>
+                        <li>全部高级策略</li>
+                        <li>50000U上限</li>
+                        <li>深度分析</li>
+                        <li>优先支持</li>
+                    </ul>
+                    <button class="btn btn-primary">立即订阅</button>
+                </div>
+
+                <div class="price-card">
+                    <h3>旗舰版</h3>
+                    <div class="price">$99.9</div>
+                    <div class="price-period">每月</div>
+                    <ul class="price-features">
+                        <li>全部策略</li>
+                        <li>定制策略</li>
+                        <li>无限额度</li>
+                        <li>VIP分析</li>
+                        <li>专属1v1</li>
+                    </ul>
+                    <button class="btn btn-outline">联系我们</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <h2 class="section-title">它是如何 <span class="highlight">工作</span> 的</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Toobit账户登录</h3>
+                    <p>安全快速地创建或登录您的账户</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>AI分析市场</h3>
+                    <p>AI实时分析市场行情和交易机会</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>选择跟单或自主</h3>
+                    <p>跟随策略或自己设置参数交易</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>AI持续优化</h3>
+                    <p>AI根据市场动态持续优化您的策略</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security & Trust -->
+        <section id="security" class="security-section">
+            <h2 class="section-title">安全与 <span class="highlight">信任</span></h2>
+            <div class="security-grid">
+                <div class="security-item">
+                    <h3>资金安全</h3>
+                    <p>Toobit 账户体系，采用军级加密技术，您的资金始终由您掌控</p>
+                </div>
+                <div class="security-item">
+                    <h3>用户掌权</h3>
+                    <p>AI只建议不代操，用户掌握最终决策权，AI是辅助而非主宰</p>
+                </div>
+                <div class="security-item">
+                    <h3>完全透明</h3>
+                    <p>全链路审计日志，每个AI操作可追溯，任何时刻都可查看历史</p>
+                </div>
+                <div class="security-item">
+                    <h3>7×24监控</h3>
+                    <p>7×24小时风控监控，异常交易立即预警，保护您的资产</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>下载</h4>
+                <div class="download-buttons">
+                    <a href="#" class="download-btn">App Store</a>
+                    <a href="#" class="download-btn">Google Play</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>关于</h4>
+                <a href="#">关于我们</a>
+                <a href="#">新闻中心</a>
+                <a href="#">加入我们</a>
+            </div>
+            <div class="footer-section">
+                <h4>支持</h4>
+                <a href="#">帮助中心</a>
+                <a href="#">联系我们</a>
+                <a href="#">状态页面</a>
+            </div>
+            <div class="footer-section">
+                <h4>法律</h4>
+                <a href="#">服务条款</a>
+                <a href="#">隐私政策</a>
+                <a href="#">风险声明</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Toobit AI. 保留所有权利。</p>
+        </div>
+    </footer>
+</body>
+</html>
